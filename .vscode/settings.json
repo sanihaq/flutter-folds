@@ -1,0 +1,6 @@
+{
+    "explorer.fileNesting.patterns": {
+        "README.md": "LICENSE",
+        "pubspec.yaml": ".metadata, .packages, all_lint_rules.yaml, analysis_options.yaml, build.yaml, pubspec.lock, melos_flutter_folds.iml, melos.yaml, .gitignore",
+    },
+}
