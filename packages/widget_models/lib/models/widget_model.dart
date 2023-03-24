@@ -1,13 +1,10 @@
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/widgets.dart';
-import 'package:uuid/uuid.dart';
 
 import '../enums/model_enums.dart';
 import '../extensions/model_extension.dart';
 import 'child_model.dart';
 import 'property_model.dart';
-
-const uuid = Uuid();
 
 abstract class WidgetModel {
   late final String id;
@@ -35,10 +32,16 @@ abstract class WidgetModel {
   Map<String, dynamic> toJson() => <String, dynamic>{
         "id": id,
         'type': EnumToString.convertToString(type),
-        "properties": properties
-            .map((final key, final value) => MapEntry(key, value.toJson())),
-        "children": children
-            .map((final key, final value) => MapEntry(key, value.toJson())),
+        "properties": properties.map(
+          (final key, final value) => value.value == null
+              ? const MapEntry(null, null)
+              : MapEntry(key, value.toJson()),
+        )..remove(null),
+        "children": children.map(
+          (final key, final value) => value.children.isEmpty
+              ? const MapEntry(null, null)
+              : MapEntry(key, value.toJson()),
+        )..remove(null),
       };
 
   static WidgetModel fromJson(final Map<String, dynamic> json) {

@@ -6,6 +6,7 @@ import '../../models/property_model.dart';
 import '../../models/widget_model.dart';
 import '../../property_models/double.dart';
 import '../../property_models/key.dart';
+import '../../utils/utils.dart';
 
 @immutable
 class CenterModel extends WidgetModel {
@@ -15,7 +16,7 @@ class CenterModel extends WidgetModel {
     final Map<String, PropertyModel>? properties,
     final Map<String, ChildModel>? children,
   }) {
-    super.id = id ?? uuid.v4();
+    super.id = id ?? generateUniqueId();
     super.type = ModelType.center;
     super.properties = properties ??
         {
@@ -29,25 +30,32 @@ class CenterModel extends WidgetModel {
   @override
   Widget toWidget() {
     return Center(
-      key: (super.properties["key"]! as KeyProperty).resolveValue(),
+      key: (super.properties["key"] as KeyProperty?)?.resolveValue(),
       widthFactor:
-          (super.properties["widthFactor"]! as DoubleProperty).resolveValue(),
+          (super.properties["widthFactor"] as DoubleProperty?)?.resolveValue(),
       heightFactor:
-          (super.properties["heightFactor"]! as DoubleProperty).resolveValue(),
+          (super.properties["heightFactor"] as DoubleProperty?)?.resolveValue(),
       child: super.children["child"]?.firstOrNull?.toWidget(),
     );
   }
 
   @override
   String toCode() {
+    final key = properties["key"];
+    final widthFactor = properties["widthFactor"];
+    final heightFactor = properties["heightFactor"];
+    final child = children["child"]?.firstOrNull;
     return """
   Center(
-    key: ${properties["key"]?.toCode()},
-    widthFactor: ${properties["widthFactor"]?.toCode()},
-    heightFactor: ${properties["heightFactor"]?.toCode()},
-    child: ${children["child"]?.firstOrNull?.toCode()},
+    ${key?.resolveValue() == null ? "" : "key: ${key?.toCode()},"}
+    ${widthFactor?.resolveValue() == null ? "" : "widthFactor: ${widthFactor?.toCode()},"}
+    ${heightFactor?.resolveValue() == null ? "" : "heightFactor: ${heightFactor?.toCode()},"}
+    ${child == null ? "" : "child: ${child.toCode()},"}
   )
-""";
+"""
+        .replaceAll("\n", "")
+        .replaceAll(" ", "")
+        .trim();
   }
 
   @override
@@ -66,10 +74,12 @@ class CenterModel extends WidgetModel {
 
   factory CenterModel.fromJson(final Map<String, dynamic> json) => CenterModel(
         id: json['id'] as String,
-        properties: (json['properties'] as Map<String, Map<String, dynamic>>)
-            .map((final key, final value) =>
-                MapEntry(key, PropertyModel.fromJson(value))),
-        children: (json['children'] as Map<String, Map<String, dynamic>>).map(
+        properties:
+            Map<String, Map<String, dynamic>>.from(json['properties'] as Map)
+                .map((final key, final value) =>
+                    MapEntry(key, PropertyModel.fromJson(value))),
+        children:
+            Map<String, Map<String, dynamic>>.from(json['children'] as Map).map(
           (final key, final value) => MapEntry(key, ChildModel.fromJson(value)),
         ),
       );

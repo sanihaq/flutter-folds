@@ -10,7 +10,6 @@ dependencies:
   enum_to_string: ^2.0.1
   flutter:
     sdk: flutter
-  uuid: ^3.0.7
 
 dev_dependencies:
   extra_pedantic: ^3.0.0

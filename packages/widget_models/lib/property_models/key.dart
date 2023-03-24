@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../enums/property_enums.dart';
 import '../models/property_model.dart';
 
-enum _KeyValueType {
+enum KeyValueType {
   global,
   // object,
   unique,
@@ -12,9 +12,9 @@ enum _KeyValueType {
 }
 
 @immutable
-class KeyProperty extends PropertyModel<_KeyValueType?> {
+class KeyProperty extends PropertyModel<KeyValueType?> {
   KeyProperty({
-    final _KeyValueType? value,
+    final KeyValueType? value,
     final bool? isNullable,
     final bool? isReplaceable,
   }) {
@@ -26,19 +26,19 @@ class KeyProperty extends PropertyModel<_KeyValueType?> {
 
   @override
   // ignore: overridden_fields
-  final List<_KeyValueType?> availableValues = _KeyValueType.values;
+  final List<KeyValueType?> availableValues = KeyValueType.values;
 
   @override
   Key? resolveValue() {
     if (value == null) return null;
     switch (value!) {
-      case _KeyValueType.global:
+      case KeyValueType.global:
         return GlobalKey();
-      // case _KeyValueType.object:
+      // case KeyValueType.object:
       //   return const ObjectKey(null);
-      case _KeyValueType.unique:
+      case KeyValueType.unique:
         return UniqueKey();
-      // case _KeyValueType.value:
+      // case KeyValueType.value:
       //   return const ValueKey(null);
     }
   }
@@ -47,20 +47,20 @@ class KeyProperty extends PropertyModel<_KeyValueType?> {
   String toCode() {
     if (value == null) return "null";
     switch (value!) {
-      case _KeyValueType.global:
+      case KeyValueType.global:
         return "GlobalKey()";
-      // case _KeyValueType.object:
+      // case KeyValueType.object:
       //   return const ObjectKey(null);
-      case _KeyValueType.unique:
+      case KeyValueType.unique:
         return "UniqueKey()";
-      // case _KeyValueType.value:
+      // case KeyValueType.value:
       //   return const ValueKey(null);
     }
   }
 
   @override
-  PropertyModel<_KeyValueType?> copyWith({
-    final _KeyValueType? value,
+  PropertyModel<KeyValueType?> copyWith({
+    final KeyValueType? value,
     final bool? isNullable,
     final bool? isReplaceable,
   }) {
@@ -68,14 +68,15 @@ class KeyProperty extends PropertyModel<_KeyValueType?> {
   }
 
   @override
-  String? valueToJson([final _KeyValueType? value]) {
+  String? valueToJson([KeyValueType? value]) {
+    value ??= super.value;
     if (value == null) return null;
     return EnumToString.convertToString(value);
   }
 
-  static _KeyValueType? valueFromJson(final String? value) {
+  static KeyValueType? valueFromJson(final String? value) {
     if (value == null) return null;
-    return EnumToString.fromString(_KeyValueType.values, value);
+    return EnumToString.fromString(KeyValueType.values, value);
   }
 
   factory KeyProperty.fromJson(final Map<String, dynamic> json) {

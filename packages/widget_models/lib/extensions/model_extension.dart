@@ -1,6 +1,6 @@
 import '../enums/model_enums.dart';
 import '../models/widget_model.dart';
-import '../widget_models/widgets/center.dart';
+import '../widget_models/widgets/center_model.dart';
 
 extension ModelExtension on ModelType {
   WidgetModel get model {

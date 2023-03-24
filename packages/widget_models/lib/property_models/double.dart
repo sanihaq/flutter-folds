@@ -38,7 +38,8 @@ class DoubleProperty extends PropertyModel<double?> {
   }
 
   @override
-  double? valueToJson([final double? value]) {
+  double? valueToJson([double? value]) {
+    value ??= super.value;
     return value ?? super.value;
   }
 

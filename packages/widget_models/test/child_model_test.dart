@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:widget_models/enums/child_enums.dart';
 import 'package:widget_models/models/child_model.dart';
 
-import 'package:widget_models/widget_models/widgets/center.dart';
+import 'package:widget_models/widget_models/widgets/center_model.dart';
 
 void main() {
   test('ChildModel can accept child', () {
