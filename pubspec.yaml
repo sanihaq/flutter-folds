@@ -3,4 +3,5 @@ name: flutter_folds_workspace
 environment:
   sdk: ">=2.18.0 <3.0.0"
 dev_dependencies:
+  extra_pedantic: ^3.0.0
   melos: ^3.0.0

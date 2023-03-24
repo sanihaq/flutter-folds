@@ -1,0 +1,1 @@
+enum ChildType { child, children }

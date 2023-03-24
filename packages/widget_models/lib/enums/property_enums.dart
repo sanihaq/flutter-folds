@@ -1,0 +1,15 @@
+enum PropertyType {
+  bool,
+  color,
+  crossAxisAlignment,
+  double,
+  fontStyle,
+  fontWeight,
+  function,
+  iconData,
+  int,
+  key,
+  mainAxisAlignment,
+  string,
+  textStyle,
+}
