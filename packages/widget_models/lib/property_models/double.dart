@@ -47,8 +47,8 @@ class DoubleProperty extends PropertyModel<double?> {
   factory DoubleProperty.fromJson(final Map<String, dynamic> json) {
     return DoubleProperty(
       value: DoubleProperty.valueFromJson(json['value'] as double?),
-      isNullable: json['value'] as bool?,
-      isReplaceable: json['value'] as bool?,
+      isNullable: json['is-nullable'] as bool?,
+      isReplaceable: json['is-replaceable'] as bool?,
     );
   }
 }

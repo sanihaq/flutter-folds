@@ -81,8 +81,8 @@ class KeyProperty extends PropertyModel<_KeyValueType?> {
   factory KeyProperty.fromJson(final Map<String, dynamic> json) {
     return KeyProperty(
       value: KeyProperty.valueFromJson(json["value"] as String?),
-      isNullable: json['value'] as bool?,
-      isReplaceable: json['value'] as bool?,
+      isNullable: json['is-nullable'] as bool?,
+      isReplaceable: json['is-replaceable'] as bool?,
     );
   }
 }
