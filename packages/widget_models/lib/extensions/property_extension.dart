@@ -1,7 +1,13 @@
 import '../enums/property_enums.dart';
 import '../models/property_model.dart';
-import '../property_models/double.dart';
-import '../property_models/key.dart';
+import '../property_models/cross_axis_alignment_model.dart';
+import '../property_models/double_model.dart';
+import '../property_models/key_model.dart';
+import '../property_models/main_axis_alignment_model.dart';
+import '../property_models/main_axis_size_model.dart';
+import '../property_models/text_baseline_model.dart';
+import '../property_models/text_direction_model.dart';
+import '../property_models/vertical_direction_model.dart';
 
 extension ModelExtension on PropertyType {
   // ignore: strict_raw_type
@@ -14,8 +20,7 @@ extension ModelExtension on PropertyType {
         // TODO: Handle this case.
         break;
       case PropertyType.crossAxisAlignment:
-        // TODO: Handle this case.
-        break;
+        return CrossAxisAlignmentProperty.fromJson(json);
       case PropertyType.double:
         return DoubleProperty.fromJson(json);
       case PropertyType.fontStyle:
@@ -36,15 +41,23 @@ extension ModelExtension on PropertyType {
       case PropertyType.key:
         return KeyProperty.fromJson(json);
       case PropertyType.mainAxisAlignment:
-        // TODO: Handle this case.
-        break;
+        return MainAxisAlignmentProperty.fromJson(json);
       case PropertyType.string:
         // TODO: Handle this case.
         break;
       case PropertyType.textStyle:
         // TODO: Handle this case.
         break;
+      case PropertyType.mainAxisSize:
+        return MainAxisSizeProperty.fromJson(json);
+      case PropertyType.textBaseline:
+        return TextBaselineProperty.fromJson(json);
+      case PropertyType.textDirection:
+        return TextDirectionProperty.fromJson(json);
+      case PropertyType.verticalDirection:
+        return VerticalDirectionProperty.fromJson(json);
     }
+
     return KeyProperty();
   }
 }

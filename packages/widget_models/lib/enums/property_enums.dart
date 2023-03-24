@@ -10,6 +10,10 @@ enum PropertyType {
   int,
   key,
   mainAxisAlignment,
+  mainAxisSize,
   string,
+  textBaseline,
+  textDirection,
   textStyle,
+  verticalDirection,
 }

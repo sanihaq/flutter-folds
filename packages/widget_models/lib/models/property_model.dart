@@ -12,7 +12,7 @@ abstract class PropertyModel<T> {
 
   late final bool isReplaceable;
 
-  final List<T?> availableValues = const [];
+  final List<T> availableValues = const [];
 
   Object? resolveValue();
 

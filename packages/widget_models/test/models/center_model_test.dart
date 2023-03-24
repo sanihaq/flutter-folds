@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:widget_models/enums/model_enums.dart';
 import 'package:widget_models/models/child_model.dart';
-import 'package:widget_models/property_models/key.dart';
+import 'package:widget_models/property_models/key_model.dart';
 import 'package:widget_models/widget_models/widgets/center_model.dart';
 
 void main() {
@@ -68,7 +68,7 @@ void main() {
     final model = CenterModel.fromJson(sampleModelData);
 
     expect(1, model.properties.length);
-    expect(1, model.children.length);
+    expect(1, model.children["child"]?.children.length);
     expect(Center, model.toWidget().runtimeType);
   });
 }

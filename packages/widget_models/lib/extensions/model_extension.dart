@@ -1,6 +1,7 @@
 import '../enums/model_enums.dart';
 import '../models/widget_model.dart';
 import '../widget_models/widgets/center_model.dart';
+import '../widget_models/widgets/column_model.dart';
 
 extension ModelExtension on ModelType {
   WidgetModel get model {
@@ -37,8 +38,7 @@ extension ModelExtension on ModelType {
       case ModelType.center:
         return CenterModel.fromJson(json);
       case ModelType.column:
-        // TODO: Handle this case.
-        break;
+        return ColumnModel.fromJson(json);
       case ModelType.container:
         // TODO: Handle this case.
         break;

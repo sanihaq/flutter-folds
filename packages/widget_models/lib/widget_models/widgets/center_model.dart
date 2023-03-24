@@ -4,8 +4,8 @@ import '../../enums/model_enums.dart';
 import '../../models/child_model.dart';
 import '../../models/property_model.dart';
 import '../../models/widget_model.dart';
-import '../../property_models/double.dart';
-import '../../property_models/key.dart';
+import '../../property_models/double_model.dart';
+import '../../property_models/key_model.dart';
 import '../../utils/utils.dart';
 
 @immutable

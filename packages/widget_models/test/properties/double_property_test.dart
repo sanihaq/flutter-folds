@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:widget_models/enums/property_enums.dart';
-import 'package:widget_models/property_models/double.dart';
+import 'package:widget_models/property_models/double_model.dart';
 
 void main() {
   test('double property with no value test', () {
