@@ -5,6 +5,7 @@ enum ModelType {
   floatingActionButton,
   icon,
   materialApp,
+  row,
   scaffold,
   text,
 }

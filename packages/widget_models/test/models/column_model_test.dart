@@ -14,7 +14,6 @@ void main() {
     expect(ModelType.column, model.type);
     expect(Column, model.toWidget().runtimeType);
     expect("Column()", model.toCode());
-    print(model.toJson());
     expect({
       "id": "7727R8",
       "type": "column",
