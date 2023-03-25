@@ -1,7 +1,12 @@
-name: flutter_folds_workspace
+name: flutter_folds
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
+
+dependencies:
+  widget_models:
+    path: packages/widget_models
+
 dev_dependencies:
   extra_pedantic: ^3.0.0
   melos: ^3.0.0
