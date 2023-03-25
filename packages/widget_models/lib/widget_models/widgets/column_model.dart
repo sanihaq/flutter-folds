@@ -39,7 +39,7 @@ class ColumnModel extends WidgetModel {
   }
 
   @override
-  Widget toWidget() {
+  Column toWidget() {
     return Column(
       key: (super.properties["key"] as KeyProperty?)?.resolveValue(),
       mainAxisAlignment:

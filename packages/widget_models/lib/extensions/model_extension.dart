@@ -2,6 +2,7 @@ import '../enums/model_enums.dart';
 import '../models/widget_model.dart';
 import '../widget_models/widgets/center_model.dart';
 import '../widget_models/widgets/column_model.dart';
+import '../widget_models/widgets/container_model.dart';
 import '../widget_models/widgets/row_model.dart';
 
 extension ModelExtension on ModelType {
@@ -10,11 +11,9 @@ extension ModelExtension on ModelType {
       case ModelType.center:
         return CenterModel();
       case ModelType.column:
-        // TODO: Handle this case.
-        break;
+        return ColumnModel();
       case ModelType.container:
-        // TODO: Handle this case.
-        break;
+        return ContainerModel();
       case ModelType.floatingActionButton:
         // TODO: Handle this case.
         break;
@@ -30,6 +29,8 @@ extension ModelExtension on ModelType {
       case ModelType.text:
         // TODO: Handle this case.
         break;
+      case ModelType.row:
+        return RowModel();
     }
     return CenterModel();
   }

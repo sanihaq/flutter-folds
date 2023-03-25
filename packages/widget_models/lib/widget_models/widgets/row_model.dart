@@ -39,7 +39,7 @@ class RowModel extends WidgetModel {
   }
 
   @override
-  Widget toWidget() {
+  Row toWidget() {
     return Row(
       key: (super.properties["key"] as KeyProperty?)?.resolveValue(),
       mainAxisAlignment:

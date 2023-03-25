@@ -28,7 +28,7 @@ class CenterModel extends WidgetModel {
   }
 
   @override
-  Widget toWidget() {
+  Center toWidget() {
     return Center(
       key: (super.properties["key"] as KeyProperty?)?.resolveValue(),
       widthFactor:
