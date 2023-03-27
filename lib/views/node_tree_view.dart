@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
+import 'package:widget_models/models/widget_model.dart';
+import 'package:widget_models/widget_models/root_model.dart';
 
 import '../components/node_tree_tile.dart';
 import '../global/variables.dart';
-import '../models/tree_node.dart';
 
 class NodeTreeView extends StatefulWidget {
   const NodeTreeView({super.key});
@@ -16,9 +17,9 @@ class _TreeViewState extends State<NodeTreeView> {
   @override
   void initState() {
     super.initState();
-    treeController = TreeController<TreeNode>(
-      roots: nodes,
-      childrenProvider: (final TreeNode node) => node.children,
+    treeController = TreeController<WidgetModel>(
+      roots: models,
+      childrenProvider: (final WidgetModel model) => model.getAllChildren(),
     );
   }
 
@@ -36,13 +37,7 @@ class _TreeViewState extends State<NodeTreeView> {
           children: [
             IconButton(
               onPressed: () {
-                nodes.add(
-                  TreeNode(
-                    id: "${nodes.length + 1}",
-                    title: 'Root ${nodes.length + 1}',
-                    children: <TreeNode>[],
-                  ),
-                );
+                models.add(RootModel(name: "Root ${models.length + 1}"));
                 treeController.rebuild();
               },
               icon: const Icon(Icons.add),
@@ -51,10 +46,10 @@ class _TreeViewState extends State<NodeTreeView> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 40.0),
-          child: TreeView<TreeNode>(
+          child: TreeView<WidgetModel>(
             treeController: treeController,
-            nodeBuilder:
-                (final BuildContext context, final TreeEntry<TreeNode> entry) {
+            nodeBuilder: (final BuildContext context,
+                final TreeEntry<WidgetModel> entry) {
               return NodeTreeTile(
                 key: ValueKey(entry.node),
                 entry: entry,

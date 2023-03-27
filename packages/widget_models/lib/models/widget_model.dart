@@ -21,6 +21,14 @@ abstract class WidgetModel {
 
   String toCode();
 
+  List<WidgetModel> getAllChildren() {
+    final List<WidgetModel> _children = [];
+    for (final key in children.keys) {
+      _children.addAll(children[key]!.children);
+    }
+    return _children;
+  }
+
   WidgetModel copyWith({
     final String? id,
     final Map<String, PropertyModel>? properties,

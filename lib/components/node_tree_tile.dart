@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
-import 'package:widget_models/models/child_model.dart';
+import 'package:widget_models/models/widget_model.dart';
+import 'package:widget_models/widget_models/root_model.dart';
+import 'package:widget_models/widget_models/widgets/center_model.dart';
 
 import '../global/variables.dart';
-import '../models/tree_node.dart';
+import '../utils/utils.dart';
 
 class NodeTreeTile extends StatefulWidget {
   const NodeTreeTile({
@@ -12,7 +14,7 @@ class NodeTreeTile extends StatefulWidget {
     super.key,
   });
 
-  final TreeEntry<TreeNode> entry;
+  final TreeEntry<WidgetModel> entry;
   final VoidCallback onTap;
 
   @override
@@ -24,9 +26,15 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
   final editingController = TextEditingController();
   bool _isOnHover = false;
   bool _isEdit = false;
+  late final String title;
 
   @override
   void initState() {
+    if (widget.entry.node is RootModel) {
+      title = (widget.entry.node as RootModel).name;
+    } else {
+      title = getTitleFromEnum(widget.entry.node.type);
+    }
     super.initState();
   }
 
@@ -56,7 +64,18 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                         : null,
                     onPressed: widget.entry.hasChildren ? widget.onTap : null,
                   ),
-                  Text(widget.entry.node.title),
+                  if (widget.entry.parent != null)
+                    Builder(builder: (final _) {
+                      for (final key
+                          in widget.entry.parent!.node.children.keys) {
+                        if (widget.entry.parent!.node.children[key]!.children
+                            .any((final e) => e.id == widget.entry.node.id)) {
+                          return Text("$key ");
+                        }
+                      }
+                      return const Text("");
+                    }),
+                  Text(title),
                 ],
               )
             else
@@ -65,7 +84,7 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                 autofocus: true,
                 focusNode: editFocusNode,
                 decoration: InputDecoration(
-                  hintText: widget.entry.node.title,
+                  hintText: title,
                   contentPadding: const EdgeInsets.only(left: 20, bottom: 10),
                   constraints: const BoxConstraints(maxHeight: 40),
                   border: InputBorder.none,
@@ -76,14 +95,15 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                     _isEdit = false;
                   });
                   if (editingController.text != "") {
-                    nodes[nodes.indexOf(widget.entry.node)] = widget.entry.node
-                        .copyWith(title: editingController.text);
+                    models[models.indexOf(widget.entry.node)] =
+                        (widget.entry.node as RootModel)
+                            .copyWith(name: editingController.text);
                     treeController.rebuild();
                   }
                 },
                 onSubmitted: (final value) {
-                  nodes[nodes.indexOf(widget.entry.node)] =
-                      widget.entry.node.copyWith(title: value);
+                  models[models.indexOf(widget.entry.node)] =
+                      (widget.entry.node as RootModel).copyWith(name: value);
                   setState(() {
                     _isEdit = false;
                   });
@@ -105,21 +125,18 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                         setState(() {
                           _isEdit = true;
                         });
-                        editingController.text = widget.entry.node.title;
+                        editingController.text = title;
                         treeController.rebuild();
                       },
                       icon: const Icon(Icons.edit, size: 16),
                     ),
                   IconButton(
                     onPressed: () {
-                      widget.entry.node.children.add(
-                        TreeNode(
-                          id: "${widget.entry.node.children.length + 1}",
-                          title:
-                              "child ${widget.entry.node.children.length + 1}",
-                          children: [],
-                        ),
-                      );
+                      final children = widget.entry.node.children["child"];
+                      if (children != null) {
+                        widget.entry.node.children["child"] = children.copyWith(
+                            children: [...children.children, CenterModel()]);
+                      }
                       treeController.rebuild();
                     },
                     icon: const Icon(Icons.add, size: 20),
@@ -130,7 +147,7 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                         widget.entry.parent?.node.children
                             .remove(widget.entry.node);
                       } else {
-                        nodes.remove(widget.entry.node);
+                        models.remove(widget.entry.node);
                       }
                       treeController.rebuild();
                     },

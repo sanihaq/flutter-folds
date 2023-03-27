@@ -1,7 +1,6 @@
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
+import 'package:widget_models/models/widget_model.dart';
 
-import '../models/tree_node.dart';
+final List<WidgetModel> models = <WidgetModel>[];
 
-final List<TreeNode> nodes = <TreeNode>[];
-
-late final TreeController<TreeNode> treeController;
+late final TreeController<WidgetModel> treeController;
