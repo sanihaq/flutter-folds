@@ -10,7 +10,6 @@ import '../property_models/text_direction_model.dart';
 import '../property_models/vertical_direction_model.dart';
 
 extension ModelExtension on PropertyType {
-  // ignore: strict_raw_type
   PropertyModel fromJson(final Map<String, dynamic> json) {
     switch (this) {
       case PropertyType.bool:

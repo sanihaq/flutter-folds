@@ -18,7 +18,6 @@ class ClipProperty extends PropertyModel<Clip?> {
   }
 
   @override
-  // ignore: overridden_fields
   final List<Clip> availableValues = Clip.values;
 
   @override

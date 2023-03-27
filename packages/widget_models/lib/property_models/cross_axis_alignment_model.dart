@@ -18,7 +18,6 @@ class CrossAxisAlignmentProperty extends PropertyModel<CrossAxisAlignment?> {
   }
 
   @override
-  // ignore: overridden_fields
   final List<CrossAxisAlignment> availableValues = CrossAxisAlignment.values;
 
   @override

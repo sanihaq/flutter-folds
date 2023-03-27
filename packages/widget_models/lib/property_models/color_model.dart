@@ -23,7 +23,6 @@ class ColorProperty extends PropertyModel<ColorValueType?> {
   }
 
   @override
-  // ignore: overridden_fields
   final List<ColorValueType> availableValues = ColorValueType.values;
 
   @override

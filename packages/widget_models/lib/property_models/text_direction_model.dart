@@ -18,7 +18,6 @@ class TextDirectionProperty extends PropertyModel<TextDirection?> {
   }
 
   @override
-  // ignore: overridden_fields
   final List<TextDirection> availableValues = TextDirection.values;
 
   @override

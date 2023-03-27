@@ -13,7 +13,6 @@ dependencies:
 
 dev_dependencies:
   extra_pedantic: ^3.0.0
-  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
 

@@ -11,7 +11,6 @@ import '../../utils/utils.dart';
 class MaterialAppModel extends WidgetModel {
   MaterialAppModel({
     final String? id,
-    // ignore: strict_raw_type
     final Map<String, PropertyModel>? properties,
     final Map<String, ChildModel>? children,
   }) {
@@ -50,7 +49,6 @@ class MaterialAppModel extends WidgetModel {
   @override
   WidgetModel copyWith({
     final String? id,
-    // ignore: strict_raw_type
     final Map<String, PropertyModel>? properties,
     final Map<String, ChildModel>? children,
   }) {

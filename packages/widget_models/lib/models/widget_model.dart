@@ -11,7 +11,6 @@ abstract class WidgetModel {
 
   late final ModelType type;
 
-  // ignore: strict_raw_type
   late final Map<String, PropertyModel> properties;
 
   late final Map<String, ChildModel> children;
@@ -24,7 +23,6 @@ abstract class WidgetModel {
 
   WidgetModel copyWith({
     final String? id,
-    // ignore: strict_raw_type
     final Map<String, PropertyModel>? properties,
     final Map<String, ChildModel>? children,
   });

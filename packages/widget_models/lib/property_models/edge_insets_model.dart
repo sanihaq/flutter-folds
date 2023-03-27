@@ -27,7 +27,6 @@ class EdgeInsetsProperty extends PropertyModel<EdgeInsetsValueType?> {
   }
 
   @override
-  // ignore: overridden_fields
   final List<EdgeInsetsValueType> availableValues = EdgeInsetsValueType.values;
 
   @override

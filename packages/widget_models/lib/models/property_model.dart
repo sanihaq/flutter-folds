@@ -35,7 +35,6 @@ abstract class PropertyModel<T> {
 
   Object? valueToJson([final T? value]);
 
-  // ignore: strict_raw_type
   static PropertyModel fromJson(final Map<String, dynamic> json) {
     final type = json["type"] as String?;
     if (type == null) throw Error();

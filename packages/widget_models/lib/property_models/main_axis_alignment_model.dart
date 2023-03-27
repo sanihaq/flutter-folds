@@ -18,7 +18,6 @@ class MainAxisAlignmentProperty extends PropertyModel<MainAxisAlignment?> {
   }
 
   @override
-  // ignore: overridden_fields
   final List<MainAxisAlignment> availableValues = MainAxisAlignment.values;
 
   @override

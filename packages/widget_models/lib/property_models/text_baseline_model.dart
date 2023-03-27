@@ -18,7 +18,6 @@ class TextBaselineProperty extends PropertyModel<TextBaseline?> {
   }
 
   @override
-  // ignore: overridden_fields
   final List<TextBaseline> availableValues = TextBaseline.values;
 
   @override

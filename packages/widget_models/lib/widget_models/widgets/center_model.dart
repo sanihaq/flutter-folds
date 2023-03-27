@@ -12,7 +12,6 @@ import '../../utils/utils.dart';
 class CenterModel extends WidgetModel {
   CenterModel({
     final String? id,
-    // ignore: strict_raw_type
     final Map<String, PropertyModel>? properties,
     final Map<String, ChildModel>? children,
   }) {
@@ -61,7 +60,6 @@ class CenterModel extends WidgetModel {
   @override
   WidgetModel copyWith({
     final String? id,
-    // ignore: strict_raw_type
     final Map<String, PropertyModel>? properties,
     final Map<String, ChildModel>? children,
   }) {

@@ -22,7 +22,6 @@ class DecorationProperty extends PropertyModel<DecorationValueType?> {
   }
 
   @override
-  // ignore: overridden_fields
   final List<DecorationValueType> availableValues = DecorationValueType.values;
 
   @override

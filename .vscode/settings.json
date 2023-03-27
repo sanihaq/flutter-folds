@@ -1,7 +1,7 @@
 {
     "explorer.fileNesting.patterns": {
         "README.md": "LICENSE, *.md",
-        "pubspec.yaml": ".metadata, .packages, *.lock, *.iml, *.yaml, .gitignore",
+        "pubspec.yaml": ".metadata, .packages, *.lock, *.iml, *.yaml, *.log, .gitignore",
     },
     "dart.runPubGetOnPubspecChanges": "never",
 }

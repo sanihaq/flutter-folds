@@ -40,7 +40,6 @@ class Matrix4Property extends PropertyModel<Matrix4ValueType?> {
   }
 
   @override
-  // ignore: overridden_fields
   final List<Matrix4ValueType> availableValues = Matrix4ValueType.values;
 
   @override

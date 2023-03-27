@@ -1,1 +1,10 @@
 include: package:extra_pedantic/analysis_options.yaml
+
+analyzer:
+  exclude: [build/**]
+  plugins:
+    - custom_lint
+  language:
+
+linter:
+  rules:

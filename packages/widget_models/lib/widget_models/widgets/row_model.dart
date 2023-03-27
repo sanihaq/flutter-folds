@@ -18,7 +18,6 @@ import '../../utils/utils.dart';
 class RowModel extends WidgetModel {
   RowModel({
     final String? id,
-    // ignore: strict_raw_type
     final Map<String, PropertyModel>? properties,
     final Map<String, ChildModel>? children,
   }) {
@@ -101,7 +100,6 @@ class RowModel extends WidgetModel {
   @override
   WidgetModel copyWith({
     final String? id,
-    // ignore: strict_raw_type
     final Map<String, PropertyModel>? properties,
     final Map<String, ChildModel>? children,
   }) {

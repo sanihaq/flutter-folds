@@ -18,6 +18,7 @@
 *.iws
 .env
 *.g.dart
+*.freezed.dart
 
 # Flutter/Dart/Pub related
 **/doc/api/

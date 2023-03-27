@@ -30,7 +30,6 @@ class AlignmentProperty extends PropertyModel<AlignmentValueType?> {
   }
 
   @override
-  // ignore: overridden_fields
   final List<AlignmentValueType> availableValues = AlignmentValueType.values;
 
   @override

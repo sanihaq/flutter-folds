@@ -25,7 +25,6 @@ class KeyProperty extends PropertyModel<KeyValueType?> {
   }
 
   @override
-  // ignore: overridden_fields
   final List<KeyValueType> availableValues = KeyValueType.values;
 
   @override

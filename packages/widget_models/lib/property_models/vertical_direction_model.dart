@@ -18,7 +18,6 @@ class VerticalDirectionProperty extends PropertyModel<VerticalDirection?> {
   }
 
   @override
-  // ignore: overridden_fields
   final List<VerticalDirection> availableValues = VerticalDirection.values;
 
   @override

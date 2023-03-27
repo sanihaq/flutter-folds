@@ -18,7 +18,6 @@ class MainAxisSizeProperty extends PropertyModel<MainAxisSize?> {
   }
 
   @override
-  // ignore: overridden_fields
   final List<MainAxisSize> availableValues = MainAxisSize.values;
 
   @override
