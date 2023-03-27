@@ -17,7 +17,7 @@ class RootModel extends WidgetModel {
     final Map<String, ChildModel>? children,
   }) {
     super.id = id ?? generateUniqueId();
-    super.type = ModelType.center;
+    super.type = ModelType.root;
     super.properties = properties ??
         {
           "key": KeyProperty(),
@@ -77,7 +77,7 @@ class RootModel extends WidgetModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return super.toJson()..addAll(<String, dynamic>{"name": name});
+    return <String, dynamic>{"name": name}..addAll(super.toJson());
   }
 
   factory RootModel.fromJson(final Map<String, dynamic> json) => RootModel(

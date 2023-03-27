@@ -53,7 +53,9 @@ class _TreeViewState extends State<NodeTreeView> {
               return NodeTreeTile(
                 key: ValueKey(entry.node),
                 entry: entry,
-                onTap: () => treeController.toggleExpansion(entry.node),
+                onTap: () {
+                  print(entry.node.toJson());
+                },
               );
             },
           ),

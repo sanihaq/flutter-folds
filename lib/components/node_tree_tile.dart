@@ -62,7 +62,11 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                     isOpen: widget.entry.hasChildren
                         ? widget.entry.isExpanded
                         : null,
-                    onPressed: widget.entry.hasChildren ? widget.onTap : null,
+                    onPressed: widget.entry.hasChildren
+                        ? () {
+                            treeController.toggleExpansion(widget.entry.node);
+                          }
+                        : null,
                   ),
                   if (widget.entry.parent != null)
                     Builder(builder: (final _) {
@@ -70,7 +74,10 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                           in widget.entry.parent!.node.children.keys) {
                         if (widget.entry.parent!.node.children[key]!.children
                             .any((final e) => e.id == widget.entry.node.id)) {
-                          return Text("$key ");
+                          return Text(
+                            "$key ",
+                            style: Theme.of(context).textTheme.bodySmall,
+                          );
                         }
                       }
                       return const Text("");
@@ -131,21 +138,38 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                       icon: const Icon(Icons.edit, size: 16),
                     ),
                   IconButton(
-                    onPressed: () {
-                      final children = widget.entry.node.children["child"];
-                      if (children != null) {
-                        widget.entry.node.children["child"] = children.copyWith(
-                            children: [...children.children, CenterModel()]);
-                      }
-                      treeController.rebuild();
-                    },
+                    onPressed: widget.entry.node.children.values
+                            .any((final e) => e.canAcceptChild)
+                        ? () {
+                            final children =
+                                widget.entry.node.children["child"];
+                            if (children != null) {
+                              widget.entry.node.children["child"] = children
+                                  .copyWith(children: [
+                                ...children.children,
+                                CenterModel()
+                              ]);
+                            }
+                            treeController.rebuild();
+                            if (!widget.entry.isExpanded) {
+                              treeController.toggleExpansion(widget.entry.node);
+                            }
+                          }
+                        : null,
                     icon: const Icon(Icons.add, size: 20),
                   ),
                   IconButton(
                     onPressed: () {
                       if (widget.entry.parent != null) {
-                        widget.entry.parent?.node.children
-                            .remove(widget.entry.node);
+                        for (final key
+                            in widget.entry.parent!.node.children.keys) {
+                          if (widget.entry.parent!.node.children[key]!.children
+                              .contains(widget.entry.node)) {
+                            widget.entry.parent!.node.children[key]!.children
+                                .remove(widget.entry.node);
+                            break;
+                          }
+                        }
                       } else {
                         models.remove(widget.entry.node);
                       }

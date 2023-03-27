@@ -6,7 +6,7 @@ String generateUniqueId() {
   final timestamp = now.microsecondsSinceEpoch.toString();
   const allowedChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#\$\%^&*()';
   final randomChars = List.generate(
-      2, (final _) => allowedChars[random.nextInt(allowedChars.length)]);
+      4, (final _) => allowedChars[random.nextInt(allowedChars.length)]);
   final id = '$timestamp${randomChars.join()}';
-  return id.substring(id.length - 6);
+  return id.substring(id.length - 8);
 }
