@@ -11,6 +11,8 @@ dependencies:
   flutter_fancy_tree_view: ^1.1.0
   freezed_annotation: ^2.2.0
   json_annotation: ^4.8.0
+  modals: ^1.0.0+1
+  searchable_listview: ^2.2.2
   widget_models:
 
 dev_dependencies:

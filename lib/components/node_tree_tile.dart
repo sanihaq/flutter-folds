@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
+import 'package:modals/modals.dart';
+import 'package:searchable_listview/searchable_listview.dart';
+import 'package:widget_models/enums/model_enums.dart';
+import 'package:widget_models/extensions/model_extension.dart';
 import 'package:widget_models/models/widget_model.dart';
 import 'package:widget_models/widget_models/root_model.dart';
-import 'package:widget_models/widget_models/widgets/center_model.dart';
 
 import '../global/variables.dart';
 import '../utils/utils.dart';
@@ -22,10 +25,12 @@ class NodeTreeTile extends StatefulWidget {
 }
 
 class _NodeTreeTileState extends State<NodeTreeTile> {
+  final addBtnKey = GlobalKey();
   final editFocusNode = FocusNode();
   final editingController = TextEditingController();
   bool _isOnHover = false;
   bool _isEdit = false;
+  bool _isModalShowing = false;
   late final String title;
 
   @override
@@ -117,64 +122,159 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                   treeController.rebuild();
                 },
               ),
-            if (_isOnHover && !_isEdit)
+            if (_isModalShowing || _isOnHover && !_isEdit)
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   if (widget.entry.parent == null)
                     IconButton(
-                      onPressed: () {},
+                      onPressed: _isModalShowing ? null : () {},
                       icon: const Icon(Icons.remove_red_eye, size: 16),
                     ),
                   if (widget.entry.parent == null)
                     IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _isEdit = true;
-                        });
-                        editingController.text = title;
-                        treeController.rebuild();
-                      },
+                      onPressed: _isModalShowing
+                          ? null
+                          : () {
+                              _isEdit = true;
+                              editingController.text = title;
+                              treeController.rebuild();
+                            },
                       icon: const Icon(Icons.edit, size: 16),
                     ),
-                  IconButton(
-                    onPressed: widget.entry.node.children.values
-                            .any((final e) => e.canAcceptChild)
-                        ? () {
-                            final children =
-                                widget.entry.node.children["child"];
-                            if (children != null) {
-                              widget.entry.node.children["child"] = children
-                                  .copyWith(children: [
-                                ...children.children,
-                                CenterModel()
-                              ]);
+                  ModalAnchor(
+                    tag: 'anchor+${widget.entry.node.id}',
+                    child: IconButton(
+                      key: addBtnKey,
+                      onPressed: !_isModalShowing &&
+                              widget.entry.node.children.values
+                                  .any((final e) => e.canAcceptChild)
+                          ? () {
+                              final RenderBox? renderbox =
+                                  addBtnKey.currentContext!.findRenderObject()
+                                      as RenderBox?;
+                              final Offset position =
+                                  renderbox!.localToGlobal(Offset.zero);
+                              final double y = position.dy;
+                              const maxHeight = 500.0;
+                              const minHeight = 300.0;
+                              final minConstraints = y >
+                                  MediaQuery.of(context).size.height -
+                                      minHeight;
+                              final height =
+                                  MediaQuery.of(context).size.height - (y + 60);
+                              setState(() {
+                                _isModalShowing = true;
+                              });
+                              late final String group;
+                              if (widget.entry.node.children.length == 1) {
+                                group = widget.entry.node.children.keys.first;
+                              } else {
+                                group = "x";
+                              }
+                              showModal(
+                                ModalEntry.anchored(
+                                  context,
+                                  tag: 'showModelTypesModal',
+                                  anchorTag: 'anchor+${widget.entry.node.id}',
+                                  modalAlignment: minConstraints
+                                      ? Alignment.bottomRight
+                                      : Alignment.topRight,
+                                  anchorAlignment: Alignment.bottomLeft,
+                                  barrierDismissible: true,
+                                  child: SizedBox(
+                                    height: minConstraints || height > maxHeight
+                                        ? maxHeight
+                                        : height,
+                                    width: 250,
+                                    child: Material(
+                                      elevation: 8.0,
+                                      child: SearchableList<ModelType>(
+                                        initialList: ModelType.values,
+                                        autoFocusOnSearch: true,
+                                        spaceBetweenSearchAndList: 0,
+                                        filter: (final search) {
+                                          final sorted = modelTypeValues.keys
+                                              .where((final e) => e.contains(
+                                                  search.toLowerCase()));
+                                          return sorted
+                                              .map((final e) =>
+                                                  modelTypeValues[e]!)
+                                              .toList();
+                                        },
+                                        builder: (final type) {
+                                          return InkWell(
+                                            onTap: () {
+                                              removeModal(
+                                                  'showModelTypesModal');
+                                              final children = widget
+                                                  .entry.node.children[group];
+                                              if (children != null) {
+                                                widget.entry.node
+                                                        .children[group] =
+                                                    children.copyWith(
+                                                        children: [
+                                                      ...children.children,
+                                                      type.model
+                                                    ]);
+                                              }
+                                              treeController.rebuild();
+                                              if (!widget.entry.isExpanded) {
+                                                treeController.toggleExpansion(
+                                                    widget.entry.node);
+                                              }
+                                            },
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child:
+                                                  Text(getTitleFromEnum(type)),
+                                            ),
+                                          );
+                                        },
+                                        displayClearIcon: false,
+                                        inputDecoration: const InputDecoration(
+                                          hintText: "search",
+                                          contentPadding:
+                                              EdgeInsets.only(left: 20),
+                                          border: InputBorder.none,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  onRemove: () {
+                                    setState(() {
+                                      _isModalShowing = false;
+                                    });
+                                  },
+                                ),
+                              );
                             }
-                            treeController.rebuild();
-                            if (!widget.entry.isExpanded) {
-                              treeController.toggleExpansion(widget.entry.node);
-                            }
-                          }
-                        : null,
-                    icon: const Icon(Icons.add, size: 20),
+                          : null,
+                      icon: const Icon(Icons.add, size: 20),
+                    ),
                   ),
                   IconButton(
-                    onPressed: () {
-                      if (widget.entry.parent != null) {
-                        for (final key
-                            in widget.entry.parent!.node.children.keys) {
-                          if (widget.entry.parent!.node.children[key]!.children
-                              .contains(widget.entry.node)) {
-                            widget.entry.parent!.node.children[key]!.children
-                                .remove(widget.entry.node);
-                            break;
-                          }
-                        }
-                      } else {
-                        models.remove(widget.entry.node);
-                      }
-                      treeController.rebuild();
-                    },
+                    onPressed: _isModalShowing
+                        ? null
+                        : () {
+                            if (widget.entry.parent != null) {
+                              for (final key
+                                  in widget.entry.parent!.node.children.keys) {
+                                if (widget
+                                    .entry.parent!.node.children[key]!.children
+                                    .contains(widget.entry.node)) {
+                                  widget.entry.parent!.node.children[key]!
+                                      .children
+                                      .remove(widget.entry.node);
+                                  break;
+                                }
+                              }
+                            } else {
+                              models.remove(widget.entry.node);
+                            }
+                            treeController.rebuild();
+                          },
                     icon: const Icon(Icons.delete, size: 20),
                   )
                 ],

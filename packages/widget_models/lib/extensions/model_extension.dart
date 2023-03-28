@@ -1,5 +1,8 @@
 import '../enums/model_enums.dart';
 import '../models/widget_model.dart';
+import '../widget_models/material/material_app_model.dart';
+import '../widget_models/material/scaffold_model.dart';
+import '../widget_models/root_model.dart';
 import '../widget_models/widgets/center_model.dart';
 import '../widget_models/widgets/column_model.dart';
 import '../widget_models/widgets/container_model.dart';
@@ -21,16 +24,16 @@ extension ModelExtension on ModelType {
         // TODO: Handle this case.
         break;
       case ModelType.materialApp:
-        // TODO: Handle this case.
-        break;
+        return MaterialAppModel();
       case ModelType.scaffold:
-        // TODO: Handle this case.
-        break;
+        return ScaffoldModel();
       case ModelType.text:
         // TODO: Handle this case.
         break;
       case ModelType.row:
         return RowModel();
+      case ModelType.root:
+        return RootModel(name: "Root");
     }
     return CenterModel();
   }

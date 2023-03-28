@@ -19,7 +19,7 @@ class ChildModel {
   WidgetModel? get firstOrNull => children.isNotEmpty ? children.first : null;
 
   ChildModel copyWith({final List<WidgetModel>? children}) {
-    return ChildModel(children: children ?? this.children);
+    return ChildModel(children: children ?? this.children, type: type);
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
