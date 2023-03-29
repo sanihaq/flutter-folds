@@ -21,7 +21,11 @@ class _TreeViewState extends State<NodeTreeView> {
   @override
   void initState() {
     super.initState();
-    Db.instance.getFiles();
+    Db.instance.getFiles().then((final _) {
+      if (Db.instance.files.isEmpty) {
+        Db.instance.createExampleFold();
+      }
+    });
     treeController = TreeController<WidgetModel>(
       roots: models,
       childrenProvider: (final WidgetModel model) => model.getAllChildren(),
@@ -280,6 +284,11 @@ class _FoldListItemState extends State<FoldListItem> {
                 onPressed: () async {
                   await Db.instance.deleteFold(_fold);
                   widget.setFolds();
+                  await Future<void>.delayed(const Duration(milliseconds: 300));
+                  if (Db.instance.files.isEmpty) {
+                    await Db.instance.createExampleFold();
+                    widget.setFolds();
+                  }
                 },
                 icon: const Icon(Icons.delete, size: 16),
               )

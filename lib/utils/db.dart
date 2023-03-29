@@ -32,7 +32,13 @@ class Db {
     return _instance ??= Db._();
   }
 
-  Future<FoldsFile> createNewFold(final String name) async {
+  Future<void> createExampleFold() async {
+    final fold = await createNewFold("Default Fold", false);
+    await saveData(fold.fileId, <String, dynamic>{});
+  }
+
+  Future<FoldsFile> createNewFold(final String name,
+      [final bool isSaveData = true]) async {
     final file = FoldsFile(
       name: name,
       id: db.collection(foldsFileDataCollection).doc().id,
@@ -41,7 +47,9 @@ class Db {
       modifiedAt: DateTime.now(),
     );
     await saveFold(file);
-    await saveData(file.fileId, <String, dynamic>{});
+    if (isSaveData) {
+      await saveData(file.fileId, <String, dynamic>{});
+    }
     files.insert(0, file);
     return file;
   }
