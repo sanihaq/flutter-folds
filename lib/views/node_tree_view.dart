@@ -174,11 +174,13 @@ class _FoldListItemState extends State<FoldListItem> {
 
   @override
   Widget build(final BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Stack(
       children: [
         if (!_isEdit)
-          Text(_fold.name)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: Text(_fold.name),
+          )
         else
           SizedBox(
             width: 250 - 8,
@@ -227,6 +229,7 @@ class _FoldListItemState extends State<FoldListItem> {
           ),
         if (!_isEdit)
           Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
                 onPressed: () {

@@ -43,6 +43,20 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
     super.initState();
   }
 
+  void _rename() {
+    final index = models.indexOf(widget.entry.node);
+    print("rename $index");
+    if (index >= 0) {
+      final newNode = (widget.entry.node as RootModel)
+          .copyWith(name: editingController.text);
+      models[index] = newNode;
+      treeController.rebuild();
+      if (widget.entry.isExpanded) {
+        treeController.expand(newNode);
+      }
+    }
+  }
+
   @override
   Widget build(final BuildContext context) {
     return InkWell(
@@ -100,26 +114,30 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                   contentPadding: const EdgeInsets.only(left: 20, bottom: 10),
                   constraints: const BoxConstraints(maxHeight: 40),
                   border: InputBorder.none,
+                  suffix: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _isEdit = false;
+                      });
+                      _rename();
+                    },
+                    icon: const Icon(Icons.save_outlined, size: 16),
+                  ),
                 ),
                 onTapOutside: (final _) {
-                  editFocusNode.unfocus();
                   setState(() {
                     _isEdit = false;
                   });
-                  if (editingController.text != "") {
-                    models[models.indexOf(widget.entry.node)] =
-                        (widget.entry.node as RootModel)
-                            .copyWith(name: editingController.text);
-                    treeController.rebuild();
+                  if (editingController.text != "" &&
+                      editingController.text != title) {
+                    _rename();
                   }
                 },
                 onSubmitted: (final value) {
-                  models[models.indexOf(widget.entry.node)] =
-                      (widget.entry.node as RootModel).copyWith(name: value);
                   setState(() {
                     _isEdit = false;
                   });
-                  treeController.rebuild();
+                  _rename();
                 },
               ),
             if (_isModalShowing || _isOnHover && !_isEdit)
@@ -136,9 +154,10 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                       onPressed: _isModalShowing
                           ? null
                           : () {
-                              _isEdit = true;
                               editingController.text = title;
-                              treeController.rebuild();
+                              setState(() {
+                                _isEdit = true;
+                              });
                             },
                       icon: const Icon(Icons.edit, size: 16),
                     ),

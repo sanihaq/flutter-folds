@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'utils/db.dart';
 import 'views/node_tree_view.dart';
 
 void main() {
