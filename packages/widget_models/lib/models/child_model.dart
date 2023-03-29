@@ -14,7 +14,9 @@ class ChildModel {
   final ChildType type;
 
   // check if more model is accepted or not
-  bool get canAcceptChild => type == ChildType.children || children.isEmpty;
+  bool get canAcceptChild {
+    return type == ChildType.children || children.isEmpty;
+  }
 
   WidgetModel? get firstOrNull => children.isNotEmpty ? children.first : null;
 
@@ -30,7 +32,7 @@ class ChildModel {
   factory ChildModel.fromJson(final Map<String, dynamic> json) {
     final type = json["type"] as String?;
     return ChildModel(
-      children: (json['children'] as List<Map<String, dynamic>>)
+      children: List<Map<String, dynamic>>.from(json['children'] as List)
           .map((final e) => WidgetModel.fromJson(e))
           .toList(),
       type: EnumToString.fromString(ChildType.values, type ?? "child") ??

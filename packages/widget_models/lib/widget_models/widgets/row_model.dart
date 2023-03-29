@@ -33,8 +33,9 @@ class RowModel extends WidgetModel {
           "verticalDirection": VerticalDirectionProperty(),
           "textBaseline": TextBaselineProperty(),
         };
-    super.children = children ??
-        {"children": const ChildModel(type: ChildType.children, children: [])};
+    super.children = children == null || children.isEmpty
+        ? {"children": const ChildModel(type: ChildType.children, children: [])}
+        : children;
   }
 
   @override

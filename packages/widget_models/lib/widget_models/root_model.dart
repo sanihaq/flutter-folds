@@ -24,7 +24,9 @@ class RootModel extends WidgetModel {
           "widthFactor": DoubleProperty(),
           "heightFactor": DoubleProperty(),
         };
-    super.children = children ?? {"child": const ChildModel(children: [])};
+    super.children = children == null || children.isEmpty
+        ? {"child": const ChildModel(children: [])}
+        : children;
   }
 
   final String name;

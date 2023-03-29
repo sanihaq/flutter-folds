@@ -20,7 +20,9 @@ class ScaffoldModel extends WidgetModel {
         {
           "key": KeyProperty(),
         };
-    super.children = children ?? {"body": const ChildModel(children: [])};
+    super.children = children == null || children.isEmpty
+        ? {"body": const ChildModel(children: [])}
+        : children;
   }
 
   @override

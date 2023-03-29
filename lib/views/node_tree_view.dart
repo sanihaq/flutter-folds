@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
+import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:modals/modals.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 import 'package:widget_models/models/widget_model.dart';
@@ -7,8 +8,9 @@ import 'package:widget_models/widget_models/root_model.dart';
 
 import '../components/node_tree_tile.dart';
 import '../global/variables.dart';
-import '../models/folds_file.dart';
+import '../models/fold_file.dart';
 import '../utils/db.dart';
+import '../utils/signals.dart';
 
 class NodeTreeView extends StatefulWidget {
   const NodeTreeView({super.key});
@@ -21,11 +23,6 @@ class _TreeViewState extends State<NodeTreeView> {
   @override
   void initState() {
     super.initState();
-    Db.instance.getFiles().then((final _) {
-      if (Db.instance.files.isEmpty) {
-        Db.instance.createExampleFold();
-      }
-    });
     treeController = TreeController<WidgetModel>(
       roots: models,
       childrenProvider: (final WidgetModel model) => model.getAllChildren(),
@@ -55,7 +52,13 @@ class _TreeViewState extends State<NodeTreeView> {
             Row(
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    final fold = getCurrentFold(context);
+                    final data = treeController.roots
+                        .map((final e) => e.toJson())
+                        .toList();
+                    fold.saveData(data);
+                  },
                   icon: const Icon(Icons.save_outlined),
                 ),
                 ModalAnchor(
@@ -70,7 +73,7 @@ class _TreeViewState extends State<NodeTreeView> {
                         anchorAlignment: Alignment.center,
                         barrierDismissible: true,
                         child: const SizedBox(
-                          width: 250,
+                          width: 280,
                           height: 400,
                           child: FoldList(),
                         ),
@@ -93,7 +96,7 @@ class _TreeViewState extends State<NodeTreeView> {
                 key: ValueKey(entry.node),
                 entry: entry,
                 onTap: () {
-                  print(entry.node.toJson());
+                  // print(entry.node.toJson());
                 },
               );
             },
@@ -116,7 +119,7 @@ class FoldList extends StatefulWidget {
 const _renameCode = "*rename+hdfs89ryif";
 
 class _FoldListState extends State<FoldList> {
-  List<FoldsFile> folds = [];
+  List<FoldFile> folds = [];
 
   @override
   void initState() {
@@ -126,7 +129,7 @@ class _FoldListState extends State<FoldList> {
 
   void setFolds() {
     setState(() {
-      folds = Db.instance.files;
+      folds = Db.instance.folds;
     });
   }
 
@@ -134,7 +137,7 @@ class _FoldListState extends State<FoldList> {
   Widget build(final BuildContext context) {
     return Material(
       elevation: 8.0,
-      child: SearchableList<FoldsFile>(
+      child: SearchableList<FoldFile>(
         initialList: folds,
         searchFieldEnabled: true,
         spaceBetweenSearchAndList: 0,
@@ -152,7 +155,7 @@ class _FoldListState extends State<FoldList> {
           ),
         ),
         filter: (final search) {
-          return Db.instance.files
+          return Db.instance.folds
               .where((final e) => e.name.contains(search))
               .toList();
         },
@@ -180,7 +183,7 @@ class FoldListItem extends StatefulWidget {
     super.key,
   });
 
-  final FoldsFile fold;
+  final FoldFile fold;
   final void Function() setFolds;
 
   @override
@@ -191,7 +194,7 @@ class _FoldListItemState extends State<FoldListItem> {
   final editFocusNode = FocusNode();
   final editingController = TextEditingController();
   bool _isEdit = false;
-  late FoldsFile _fold;
+  late FoldFile _fold;
 
   final _newFoldName = "New Fold";
 
@@ -208,7 +211,7 @@ class _FoldListItemState extends State<FoldListItem> {
   }
 
   void _rename() {
-    late final FoldsFile newFold;
+    late final FoldFile newFold;
     if (_fold.name == _renameCode) {
       newFold = _fold.copyWith(name: _newFoldName);
       Db.instance.renameFold(newFold);
@@ -285,7 +288,7 @@ class _FoldListItemState extends State<FoldListItem> {
                   await Db.instance.deleteFold(_fold);
                   widget.setFolds();
                   await Future<void>.delayed(const Duration(milliseconds: 300));
-                  if (Db.instance.files.isEmpty) {
+                  if (Db.instance.folds.isEmpty) {
                     await Db.instance.createExampleFold();
                     widget.setFolds();
                   }

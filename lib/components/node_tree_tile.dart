@@ -45,7 +45,6 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
 
   void _rename() {
     final index = models.indexOf(widget.entry.node);
-    print("rename $index");
     if (index >= 0) {
       final newNode = (widget.entry.node as RootModel)
           .copyWith(name: editingController.text);

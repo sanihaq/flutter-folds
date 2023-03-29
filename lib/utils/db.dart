@@ -1,10 +1,10 @@
 import 'package:localstore/localstore.dart';
 
-import '../models/folds_file.dart';
+import '../models/fold_file.dart';
 
 class Db {
-  static const foldsFileDataCollection = "folds-files";
-  static const foldsCollection = "flutter-folds";
+  static const foldsCollectionName = "folds-files";
+  static const foldsDataCollectionName = "flutter-folds";
 
   static Db? _instance;
 
@@ -14,73 +14,73 @@ class Db {
 
   late final Localstore db;
 
-  final List<FoldsFile> files = [];
+  final List<FoldFile> folds = [];
 
-  // Stream<Map<String, dynamic>> get files =>
-  //     db.collection(foldsFileDataCollection).stream;
-
-  Future<void> getFiles() async {
-    final values =
-        (await db.collection(foldsFileDataCollection).get())?.values.toList() ??
-            <Map<String, dynamic>>[];
-    files.addAll(
-        // ignore: implicit_dynamic_parameter
-        values.map((final e) => FoldsFile.fromJson(e as Map<String, Object?>)));
+  Future<void> getFolds() async {
+    final data = await db.collection(foldsCollectionName).get();
+    final _folds = <FoldFile>[];
+    if (data != null) {
+      for (final map in data.values) {
+        _folds.add(FoldFile.fromJson(Map<String, dynamic>.from(map as Map)));
+      }
+    }
+    folds.addAll(_folds);
   }
 
   static Db get instance {
     return _instance ??= Db._();
   }
 
-  Future<void> createExampleFold() async {
+  Future<FoldFile> createExampleFold() async {
     final fold = await createNewFold("Default Fold", false);
-    await saveData(fold.fileId, <String, dynamic>{});
+    await fold.saveData([]);
+    // folds.insert(0, fold);
+    return fold;
   }
 
-  Future<FoldsFile> createNewFold(final String name,
+  Future<FoldFile> createNewFold(final String name,
       [final bool isSaveData = true]) async {
-    final file = FoldsFile(
+    final fold = FoldFile(
       name: name,
-      id: db.collection(foldsFileDataCollection).doc().id,
-      fileId: db.collection(foldsCollection).doc().id,
+      id: db.collection(foldsCollectionName).doc().id,
+      dataId: db.collection(foldsDataCollectionName).doc().id,
       createdAt: DateTime.now(),
       modifiedAt: DateTime.now(),
     );
-    await saveFold(file);
+    await saveFold(fold);
     if (isSaveData) {
-      await saveData(file.fileId, <String, dynamic>{});
+      await fold.saveData([]);
     }
-    files.insert(0, file);
-    return file;
+    folds.insert(0, fold);
+    return fold;
   }
 
-  Future<void> renameFold(final FoldsFile file) async {
+  Future<void> renameFold(final FoldFile file) async {
     await saveFold(file);
-    final i = files.indexWhere((final e) => e.id == file.id);
-    files.removeAt(i);
-    files.insert(i, file);
+    final i = folds.indexWhere((final e) => e.id == file.id);
+    folds.removeAt(i);
+    folds.insert(i, file);
   }
 
-  Future<void> saveFold(final FoldsFile file) async {
-    await db
-        .collection(foldsFileDataCollection)
-        .doc(file.id)
-        .set(file.toJson());
+  Future<void> saveFold(final FoldFile file) async {
+    await file.save();
   }
 
-  Future<void> saveData(
-      final String fileId, final Map<String, dynamic> json) async {
-    await db.collection(foldsCollection).doc(fileId).set(json);
+  Future<List<Map<String, dynamic>>> getFold(final String? fileId) async {
+    final data = await db.collection(foldsDataCollectionName).doc(fileId).get();
+    return data != null
+        ? List<Map<String, dynamic>>.from(data["data"] as List)
+        : [];
   }
 
-  Future<Map<String, dynamic>> getFold(final String? fileId) async {
-    final data = await db.collection(foldsCollection).doc(fileId).get();
-    return data ?? <String, dynamic>{};
+  Future<void> deleteFold(final FoldFile file) async {
+    await file.delete();
+    await db.collection(foldsDataCollectionName).doc(file.dataId).delete();
+    folds.removeWhere((final e) => e.id == file.id);
   }
 
-  Future<void> deleteFold(final FoldsFile file) async {
-    await db.collection(foldsFileDataCollection).doc(file.id).delete();
-    await db.collection(foldsCollection).doc(file.fileId).delete();
-    files.removeWhere((final e) => e.id == file.id);
+  Future<void> deleteAllFolds() async {
+    await db.collection(foldsCollectionName).delete();
+    await db.collection(foldsDataCollectionName).delete();
   }
 }

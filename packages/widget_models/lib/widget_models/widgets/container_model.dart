@@ -40,7 +40,9 @@ class ContainerModel extends WidgetModel {
           "transformAlignment": AlignmentProperty(),
           "clipBehavior": ClipProperty(),
         };
-    super.children = children ?? {"child": const ChildModel(children: [])};
+    super.children = children == null || children.isEmpty
+        ? {"child": const ChildModel(children: [])}
+        : children;
   }
 
   @override

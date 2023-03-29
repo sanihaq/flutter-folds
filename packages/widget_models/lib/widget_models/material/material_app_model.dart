@@ -20,7 +20,9 @@ class MaterialAppModel extends WidgetModel {
         {
           "key": KeyProperty(),
         };
-    super.children = children ?? {"home": const ChildModel(children: [])};
+    super.children = children == null || children.isEmpty
+        ? {"home": const ChildModel(children: [])}
+        : children;
   }
 
   @override

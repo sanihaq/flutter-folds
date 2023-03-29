@@ -45,6 +45,7 @@ extension ModelExtension on ModelType {
       case ModelType.column:
         return ColumnModel.fromJson(json);
       case ModelType.container:
+        return ContainerModel.fromJson(json);
         // TODO: Handle this case.
         break;
       case ModelType.floatingActionButton:
@@ -54,16 +55,16 @@ extension ModelExtension on ModelType {
         // TODO: Handle this case.
         break;
       case ModelType.materialApp:
-        // TODO: Handle this case.
-        break;
+        return MaterialAppModel.fromJson(json);
       case ModelType.row:
         return RowModel.fromJson(json);
       case ModelType.scaffold:
-        // TODO: Handle this case.
-        break;
+        return ScaffoldModel.fromJson(json);
       case ModelType.text:
         // TODO: Handle this case.
         break;
+      case ModelType.root:
+        return RootModel.fromJson(json);
     }
     return CenterModel();
   }
