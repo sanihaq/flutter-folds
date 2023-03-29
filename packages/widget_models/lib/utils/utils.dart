@@ -10,3 +10,10 @@ String generateUniqueId() {
   final id = '$timestamp${randomChars.join()}';
   return id.substring(id.length - 8);
 }
+
+Map<String, T> joinMaps<T>(final Map<String, T> to, final Map<String, T> from) {
+  for (final k in from.keys) {
+    to.putIfAbsent(k, () => from[k]!);
+  }
+  return to;
+}

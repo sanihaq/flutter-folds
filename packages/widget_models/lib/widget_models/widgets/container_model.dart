@@ -24,25 +24,23 @@ class ContainerModel extends WidgetModel {
   }) {
     super.id = id ?? generateUniqueId();
     super.type = ModelType.container;
-    super.properties = properties ??
-        {
-          "key": KeyProperty(),
-          "alignment": AlignmentProperty(),
-          "padding": EdgeInsetsProperty(),
-          "color": ColorProperty(),
-          "decoration": DecorationProperty(),
-          "foregroundDecoration": DecorationProperty(),
-          "width": DoubleProperty(),
-          "height": DoubleProperty(),
-          "constraints": BoxConstraintsProperty(),
-          "margin": EdgeInsetsProperty(),
-          "transform": Matrix4Property(),
-          "transformAlignment": AlignmentProperty(),
-          "clipBehavior": ClipProperty(),
-        };
-    super.children = children == null || children.isEmpty
-        ? {"child": const ChildModel(children: [])}
-        : children;
+    super.properties = joinMaps(properties ?? {}, {
+      "key": KeyProperty(),
+      "alignment": AlignmentProperty(),
+      "padding": EdgeInsetsProperty(),
+      "color": ColorProperty(),
+      "decoration": DecorationProperty(),
+      "foregroundDecoration": DecorationProperty(),
+      "width": DoubleProperty(),
+      "height": DoubleProperty(),
+      "constraints": BoxConstraintsProperty(),
+      "margin": EdgeInsetsProperty(),
+      "transform": Matrix4Property(),
+      "transformAlignment": AlignmentProperty(),
+      "clipBehavior": ClipProperty(),
+    });
+    super.children = joinMaps<ChildModel>(
+        children ?? {}, {"child": const ChildModel(children: [])});
   }
 
   @override

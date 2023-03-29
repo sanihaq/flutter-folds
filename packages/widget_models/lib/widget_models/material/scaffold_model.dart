@@ -16,13 +16,9 @@ class ScaffoldModel extends WidgetModel {
   }) {
     super.id = id ?? generateUniqueId();
     super.type = ModelType.scaffold;
-    super.properties = properties ??
-        {
-          "key": KeyProperty(),
-        };
-    super.children = children == null || children.isEmpty
-        ? {"body": const ChildModel(children: [])}
-        : children;
+    super.properties = joinMaps(properties ?? {}, {"key": KeyProperty()});
+    super.children = joinMaps<ChildModel>(
+        children ?? {}, {"body": const ChildModel(children: [])});
   }
 
   @override

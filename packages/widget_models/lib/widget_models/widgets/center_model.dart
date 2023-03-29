@@ -17,15 +17,13 @@ class CenterModel extends WidgetModel {
   }) {
     super.id = id ?? generateUniqueId();
     super.type = ModelType.center;
-    super.properties = properties ??
-        {
-          "key": KeyProperty(),
-          "widthFactor": DoubleProperty(),
-          "heightFactor": DoubleProperty(),
-        };
-    super.children = children == null || children.isEmpty
-        ? {"child": const ChildModel(children: [])}
-        : children;
+    super.properties = joinMaps(properties ?? {}, {
+      "key": KeyProperty(),
+      "widthFactor": DoubleProperty(),
+      "heightFactor": DoubleProperty(),
+    });
+    super.children = joinMaps<ChildModel>(
+        children ?? {}, {"child": const ChildModel(children: [])});
   }
 
   @override

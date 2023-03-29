@@ -23,19 +23,18 @@ class RowModel extends WidgetModel {
   }) {
     super.id = id ?? generateUniqueId();
     super.type = ModelType.row;
-    super.properties = properties ??
-        {
-          "key": KeyProperty(),
-          "mainAxisAlignment": MainAxisAlignmentProperty(),
-          "mainAxisSize": MainAxisSizeProperty(),
-          "crossAxisAlignment": CrossAxisAlignmentProperty(),
-          "textDirection": TextDirectionProperty(),
-          "verticalDirection": VerticalDirectionProperty(),
-          "textBaseline": TextBaselineProperty(),
-        };
-    super.children = children == null || children.isEmpty
-        ? {"children": const ChildModel(type: ChildType.children, children: [])}
-        : children;
+
+    super.properties = joinMaps(properties ?? {}, {
+      "key": KeyProperty(),
+      "mainAxisAlignment": MainAxisAlignmentProperty(),
+      "mainAxisSize": MainAxisSizeProperty(),
+      "crossAxisAlignment": CrossAxisAlignmentProperty(),
+      "textDirection": TextDirectionProperty(),
+      "verticalDirection": VerticalDirectionProperty(),
+      "textBaseline": TextBaselineProperty(),
+    });
+    super.children = joinMaps<ChildModel>(children ?? {},
+        {"children": const ChildModel(type: ChildType.children, children: [])});
   }
 
   @override

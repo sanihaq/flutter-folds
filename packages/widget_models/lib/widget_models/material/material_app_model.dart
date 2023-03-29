@@ -16,13 +16,9 @@ class MaterialAppModel extends WidgetModel {
   }) {
     super.id = id ?? generateUniqueId();
     super.type = ModelType.materialApp;
-    super.properties = properties ??
-        {
-          "key": KeyProperty(),
-        };
-    super.children = children == null || children.isEmpty
-        ? {"home": const ChildModel(children: [])}
-        : children;
+    super.properties = joinMaps(properties ?? {}, {"key": KeyProperty()});
+    super.children = joinMaps<ChildModel>(
+        children ?? {}, {"home": const ChildModel(children: [])});
   }
 
   @override

@@ -18,15 +18,9 @@ class RootModel extends WidgetModel {
   }) {
     super.id = id ?? generateUniqueId();
     super.type = ModelType.root;
-    super.properties = properties ??
-        {
-          "key": KeyProperty(),
-          "widthFactor": DoubleProperty(),
-          "heightFactor": DoubleProperty(),
-        };
-    super.children = children == null || children.isEmpty
-        ? {"child": const ChildModel(children: [])}
-        : children;
+    super.properties = joinMaps(properties ?? {}, {"key": KeyProperty()});
+    super.children = joinMaps<ChildModel>(
+        children ?? {}, {"child": const ChildModel(children: [])});
   }
 
   final String name;
@@ -35,10 +29,6 @@ class RootModel extends WidgetModel {
   Center toWidget() {
     return Center(
       key: (super.properties["key"] as KeyProperty?)?.resolveValue(),
-      widthFactor:
-          (super.properties["widthFactor"] as DoubleProperty?)?.resolveValue(),
-      heightFactor:
-          (super.properties["heightFactor"] as DoubleProperty?)?.resolveValue(),
       child: super.children["child"]?.firstOrNull?.toWidget(),
     );
   }
@@ -46,14 +36,10 @@ class RootModel extends WidgetModel {
   @override
   String toCode() {
     final key = properties["key"];
-    final widthFactor = properties["widthFactor"];
-    final heightFactor = properties["heightFactor"];
     final child = children["child"]?.firstOrNull;
     return """
   Center(
     ${key?.resolveValue() == null ? "" : "key: ${key?.toCode()},"}
-    ${widthFactor?.resolveValue() == null ? "" : "widthFactor: ${widthFactor?.toCode()},"}
-    ${heightFactor?.resolveValue() == null ? "" : "heightFactor: ${heightFactor?.toCode()},"}
     ${child == null ? "" : "child: ${child.toCode()},"}
   )
 """

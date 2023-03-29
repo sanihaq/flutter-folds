@@ -27,6 +27,7 @@ class _TreeViewState extends State<NodeTreeView> {
       roots: models,
       childrenProvider: (final WidgetModel model) => model.getAllChildren(),
     );
+    treeController.expandAll();
   }
 
   @override
