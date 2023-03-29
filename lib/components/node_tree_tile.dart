@@ -132,6 +132,7 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                       editingController.text != title) {
                     _rename();
                   }
+                  editFocusNode.unfocus();
                 },
                 onSubmitted: (final value) {
                   setState(() {

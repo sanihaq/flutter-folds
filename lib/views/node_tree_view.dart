@@ -54,13 +54,6 @@ class _TreeViewState extends State<NodeTreeView> {
                   onPressed: () {},
                   icon: const Icon(Icons.save_outlined),
                 ),
-                IconButton(
-                  onPressed: () {
-                    Db.instance
-                        .createNewFold("fold ${Db.instance.files.length + 1}");
-                  },
-                  icon: const Icon(Icons.create_new_folder_outlined),
-                ),
                 ModalAnchor(
                   tag: "folds-btn",
                   child: IconButton(
@@ -116,21 +109,48 @@ class FoldList extends StatefulWidget {
   State<FoldList> createState() => _FoldListState();
 }
 
+const _renameCode = "*rename+hdfs89ryif";
+
 class _FoldListState extends State<FoldList> {
+  List<FoldsFile> folds = [];
+
+  @override
+  void initState() {
+    super.initState();
+    setFolds();
+  }
+
+  void setFolds() {
+    setState(() {
+      folds = Db.instance.files;
+    });
+  }
+
   @override
   Widget build(final BuildContext context) {
     return Material(
       elevation: 8.0,
       child: SearchableList<FoldsFile>(
-        initialList: Db.instance.files,
-        searchFieldEnabled: false,
-        // inputDecoration: const InputDecoration(
-        //   hintText: "search",
-        //   contentPadding: EdgeInsets.only(left: 20),
-        //   border: InputBorder.none,
-        // ),
+        initialList: folds,
+        searchFieldEnabled: true,
+        spaceBetweenSearchAndList: 0,
+        inputDecoration: InputDecoration(
+          hintText: "Folds",
+          contentPadding: const EdgeInsets.only(left: 20, top: 10),
+          border: InputBorder.none,
+          suffix: const SizedBox.shrink(),
+          suffixIcon: IconButton(
+            onPressed: () async {
+              await Db.instance.createNewFold(_renameCode);
+              setFolds();
+            },
+            icon: const Icon(Icons.create_new_folder_outlined),
+          ),
+        ),
         filter: (final search) {
-          return Db.instance.files;
+          return Db.instance.files
+              .where((final e) => e.name.contains(search))
+              .toList();
         },
         builder: (final fold) {
           return InkWell(
@@ -139,7 +159,8 @@ class _FoldListState extends State<FoldList> {
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: FoldListItem(fold: fold),
+              child: FoldListItem(
+                  key: ValueKey(fold.id), fold: fold, setFolds: setFolds),
             ),
           );
         },
@@ -151,10 +172,12 @@ class _FoldListState extends State<FoldList> {
 class FoldListItem extends StatefulWidget {
   const FoldListItem({
     required this.fold,
+    required this.setFolds,
     super.key,
   });
 
   final FoldsFile fold;
+  final void Function() setFolds;
 
   @override
   State<FoldListItem> createState() => _FoldListItemState();
@@ -166,22 +189,40 @@ class _FoldListItemState extends State<FoldListItem> {
   bool _isEdit = false;
   late FoldsFile _fold;
 
+  final _newFoldName = "New Fold";
+
   @override
   void initState() {
     super.initState();
     _fold = widget.fold;
+    if (_fold.name == _renameCode) {
+      setState(() {
+        _isEdit = true;
+      });
+      editFocusNode.requestFocus();
+    }
+  }
+
+  void _rename() {
+    late final FoldsFile newFold;
+    if (_fold.name == _renameCode) {
+      newFold = _fold.copyWith(name: _newFoldName);
+      Db.instance.renameFold(newFold);
+    } else if (editingController.text != "") {
+      newFold = _fold.copyWith(name: editingController.text);
+      Db.instance.renameFold(newFold);
+    }
+    setState(() {
+      _fold = newFold;
+      _isEdit = false;
+    });
   }
 
   @override
   Widget build(final BuildContext context) {
     return Stack(
       children: [
-        if (!_isEdit)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Text(_fold.name),
-          )
-        else
+        if (_isEdit)
           SizedBox(
             width: 250 - 8,
             child: TextField(
@@ -189,43 +230,38 @@ class _FoldListItemState extends State<FoldListItem> {
               controller: editingController,
               autofocus: true,
               onTapOutside: (final _) {
+                if (_fold.name == _renameCode) {
+                  final newFold = _fold.copyWith(name: _newFoldName);
+                  Db.instance.renameFold(newFold);
+                  setState(() {
+                    _fold = newFold;
+                  });
+                }
                 setState(() {
-                  editFocusNode.unfocus();
                   _isEdit = false;
                 });
+                editFocusNode.unfocus();
               },
               onSubmitted: (final value) {
-                final newFold = _fold.copyWith(name: value);
-                Db.instance.renameFold(newFold);
-                setState(() {
-                  _fold = newFold;
-                });
-                setState(() {
-                  editFocusNode.unfocus();
-                  _isEdit = false;
-                });
+                _rename();
               },
               decoration: InputDecoration(
-                hintText: _fold.name,
+                hintText: _fold.name == _renameCode ? _newFoldName : _fold.name,
                 contentPadding: const EdgeInsets.all(0),
                 border: InputBorder.none,
                 suffix: IconButton(
                   onPressed: () {
-                    setState(() {
-                      final newFold =
-                          _fold.copyWith(name: editingController.text);
-                      Db.instance.renameFold(newFold);
-                      setState(() {
-                        _fold = newFold;
-                      });
-                      editFocusNode.unfocus();
-                      _isEdit = false;
-                    });
+                    _rename();
                   },
                   icon: const Icon(Icons.save_outlined, size: 16),
                 ),
               ),
             ),
+          )
+        else
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: Text(_fold.name),
           ),
         if (!_isEdit)
           Row(
@@ -243,7 +279,7 @@ class _FoldListItemState extends State<FoldListItem> {
               IconButton(
                 onPressed: () async {
                   await Db.instance.deleteFold(_fold);
-                  removeModal('showFoldsListModal');
+                  widget.setFolds();
                 },
                 icon: const Icon(Icons.delete, size: 16),
               )
