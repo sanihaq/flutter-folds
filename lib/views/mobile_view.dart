@@ -12,21 +12,25 @@ import '../models/fold_file.dart';
 import '../utils/db.dart';
 import '../utils/signals.dart';
 
-class NodeTreeView extends StatefulWidget {
-  const NodeTreeView({super.key});
+class MobileView extends StatefulWidget {
+  const MobileView({super.key});
 
   @override
   _TreeViewState createState() => _TreeViewState();
 }
 
-class _TreeViewState extends State<NodeTreeView> with TickerProviderStateMixin {
+class _TreeViewState extends State<MobileView> with TickerProviderStateMixin {
   late final TabController _tabController;
 
   @override
   void initState() {
     super.initState();
     _tabController =
-        TabController(vsync: this, length: 3, animationDuration: Duration.zero);
+        TabController(vsync: this, length: 4, animationDuration: Duration.zero);
+    _tabController.addListener(() {
+      context.get<Signal<int>>(SignalId.currentViewTab).value =
+          _tabController.index;
+    });
     treeController = TreeController<WidgetModel>(
       roots: models,
       childrenProvider: (final WidgetModel model) => model.getAllChildren(),
@@ -47,15 +51,41 @@ class _TreeViewState extends State<NodeTreeView> with TickerProviderStateMixin {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconButton(
-              onPressed: () {
-                models.add(RootModel(name: "Root ${models.length + 1}"));
-                treeController.rebuild();
+            SignalBuilder(
+              signal: context.get<Signal<int>>(SignalId.currentViewTab),
+              builder: (final context, final value, final _) {
+                if (value == 0) {
+                  return IconButton(
+                    onPressed: () {
+                      models.add(RootModel(name: "Root ${models.length + 1}"));
+                      treeController.rebuild();
+                    },
+                    icon: const Icon(Icons.add),
+                  );
+                } else if (value == 1) {
+                  return IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      false
+                          ? Icons.toggle_on_outlined
+                          : Icons.toggle_off_outlined,
+                    ),
+                  );
+                } else if (value == 2) {
+                  return IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.ads_click, size: 20),
+                  );
+                } else {
+                  return IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.content_copy_outlined, size: 18),
+                  );
+                }
               },
-              icon: const Icon(Icons.add),
             ),
             SizedBox(
-              width: 160,
+              width: 220,
               height: 40,
               child: TabBar(
                 indicatorColor: Colors.transparent,
@@ -70,6 +100,7 @@ class _TreeViewState extends State<NodeTreeView> with TickerProviderStateMixin {
                   Tab(icon: Icon(Icons.segment, size: 22)),
                   Tab(icon: Icon(Icons.rule, size: 22)),
                   Tab(icon: Icon(Icons.slideshow_outlined, size: 22)),
+                  Tab(icon: Icon(Icons.code_outlined, size: 22)),
                 ],
               ),
             ),
@@ -130,6 +161,7 @@ class _TreeViewState extends State<NodeTreeView> with TickerProviderStateMixin {
               ),
               const Icon(Icons.rule, size: 100),
               const Icon(Icons.slideshow_outlined, size: 100),
+              const Icon(Icons.code, size: 100),
             ],
           ),
         ),

@@ -5,6 +5,7 @@ import '../models/fold_file.dart';
 
 enum SignalId {
   themeMode,
+  currentViewTab,
   currentFold,
 }
 

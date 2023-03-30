@@ -6,7 +6,7 @@ import '/utils/db.dart';
 import '/utils/signals.dart';
 import 'global/variables.dart';
 import 'models/fold_file.dart';
-import 'views/node_tree_view.dart';
+import 'views/mobile_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,6 +43,7 @@ class App extends StatelessWidget {
               SignalId.themeMode: () =>
                   createSignal<ThemeMode>(ThemeMode.system),
               SignalId.currentFold: () => createSignal<FoldFile>(fold),
+              SignalId.currentViewTab: () => createSignal<int>(0),
             },
             child: Builder(
               builder: (final context) {
@@ -79,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(final BuildContext context) {
     return const Scaffold(
-      body: NodeTreeView(),
+      body: MobileView(),
     );
   }
 }
