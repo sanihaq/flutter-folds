@@ -41,7 +41,7 @@ class App extends StatelessWidget {
           return Solid(
             signals: {
               SignalId.themeMode: () =>
-                  createSignal<ThemeMode>(ThemeMode.light),
+                  createSignal<ThemeMode>(ThemeMode.system),
               SignalId.currentFold: () => createSignal<FoldFile>(fold),
             },
             child: Builder(

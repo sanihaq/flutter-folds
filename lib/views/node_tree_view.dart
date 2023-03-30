@@ -19,10 +19,14 @@ class NodeTreeView extends StatefulWidget {
   _TreeViewState createState() => _TreeViewState();
 }
 
-class _TreeViewState extends State<NodeTreeView> {
+class _TreeViewState extends State<NodeTreeView> with TickerProviderStateMixin {
+  late final TabController _tabController;
+
   @override
   void initState() {
     super.initState();
+    _tabController =
+        TabController(vsync: this, length: 3, animationDuration: Duration.zero);
     treeController = TreeController<WidgetModel>(
       roots: models,
       childrenProvider: (final WidgetModel model) => model.getAllChildren(),
@@ -49,6 +53,25 @@ class _TreeViewState extends State<NodeTreeView> {
                 treeController.rebuild();
               },
               icon: const Icon(Icons.add),
+            ),
+            SizedBox(
+              width: 160,
+              height: 40,
+              child: TabBar(
+                indicatorColor: Colors.transparent,
+                automaticIndicatorColorAdjustment: false,
+                dividerColor: Colors.transparent,
+                indicatorSize: TabBarIndicatorSize.tab,
+                labelColor: Theme.of(context).textTheme.bodyLarge?.color,
+                unselectedLabelColor: Colors.grey,
+                splashBorderRadius: BorderRadius.circular(40),
+                controller: _tabController,
+                tabs: const [
+                  Tab(icon: Icon(Icons.segment, size: 22)),
+                  Tab(icon: Icon(Icons.rule, size: 22)),
+                  Tab(icon: Icon(Icons.slideshow_outlined, size: 22)),
+                ],
+              ),
             ),
             Row(
               children: [
@@ -80,7 +103,7 @@ class _TreeViewState extends State<NodeTreeView> {
                         ),
                       ));
                     },
-                    icon: const Icon(Icons.featured_play_list_outlined),
+                    icon: const Icon(Icons.topic_outlined),
                   ),
                 ),
               ],
@@ -89,18 +112,25 @@ class _TreeViewState extends State<NodeTreeView> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 40.0),
-          child: TreeView<WidgetModel>(
-            treeController: treeController,
-            nodeBuilder: (final BuildContext context,
-                final TreeEntry<WidgetModel> entry) {
-              return NodeTreeTile(
-                key: ValueKey(entry.node),
-                entry: entry,
-                onTap: () {
-                  // print(entry.node.toJson());
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              TreeView<WidgetModel>(
+                treeController: treeController,
+                nodeBuilder: (final BuildContext context,
+                    final TreeEntry<WidgetModel> entry) {
+                  return NodeTreeTile(
+                    key: ValueKey(entry.node),
+                    entry: entry,
+                    onTap: () {
+                      // print(entry.node.toJson());
+                    },
+                  );
                 },
-              );
-            },
+              ),
+              const Icon(Icons.rule, size: 100),
+              const Icon(Icons.slideshow_outlined, size: 100),
+            ],
           ),
         ),
       ],
