@@ -8,6 +8,7 @@ import 'package:widget_models/widget_models/root_model.dart';
 import '../components/fold_file.dart';
 import '../global/variables.dart';
 import '../models/fold_file.dart';
+import '../states/signals.dart';
 import '../utils/signals.dart';
 import 'canvas_view.dart';
 import 'code_view.dart';
@@ -65,13 +66,20 @@ class _TreeViewState extends State<MobileView> with TickerProviderStateMixin {
                     icon: const Icon(Icons.add),
                   );
                 } else if (value == 1) {
-                  return IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      true
-                          ? Icons.toggle_on_outlined
-                          : Icons.toggle_off_outlined,
-                    ),
+                  return SignalBuilder(
+                    signal: showOnlySetProperty,
+                    builder: (final context, final value, final child) {
+                      return IconButton(
+                        onPressed: () {
+                          showOnlySetProperty.value = !value;
+                        },
+                        icon: Icon(
+                          showOnlySetProperty.value
+                              ? Icons.toggle_on_outlined
+                              : Icons.toggle_off_outlined,
+                        ),
+                      );
+                    },
                   );
                 } else if (value == 2) {
                   return IconButton(

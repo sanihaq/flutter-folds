@@ -1,4 +1,5 @@
 export 'property_models/alignment_model.dart';
+export 'property_models/bool_model.dart';
 export 'property_models/box_constraints_model.dart';
 export 'property_models/clip_model.dart';
 export 'property_models/color_model.dart';

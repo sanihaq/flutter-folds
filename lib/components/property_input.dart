@@ -5,30 +5,34 @@ import 'package:widget_models/property_models.dart';
 
 import '../utils/utils.dart';
 
-DropdownButton<T?> _dropDown<T>(final List<T> values, final T? value,
-    final bool isNullable, final void Function(T?) onChange) {
-  return DropdownButton<T?>(
-    isDense: true,
-    isExpanded: true,
-    value: value,
-    items: values.map((final e) {
-      return DropdownMenuItem<T?>(
-        value: e,
-        child: Text(getTitleFromEnum(e.toString())),
-      );
-    }).toList()
-      ..insertAll(0, [
-        if (isNullable)
-          DropdownMenuItem<T?>(
-            value: null,
-            child: const Text("null"),
-          )
-      ]),
-    onChanged: onChange,
+Widget _dropDown<T>(final List<T> values, final T? value, final bool isNullable,
+    final void Function(T?) onChange) {
+  return Expanded(
+    child: DropdownButton<T?>(
+      isDense: true,
+      isExpanded: true,
+      value: value,
+      items: values.map((final e) {
+        return DropdownMenuItem<T?>(
+          value: e,
+          child: Text(getTitleFromEnum(e.toString())),
+        );
+      }).toList()
+        ..insertAll(0, [
+          if (isNullable)
+            DropdownMenuItem<T?>(
+              value: null,
+              child: const Text("null"),
+            )
+        ]),
+      onChanged: onChange,
+    ),
   );
 }
 
-Widget getPropertyInput<T>(final PropertyModel<T> model,
+Widget getPropertyInput<T>(
+    final PropertyModel<T> model,
+    // ignore: strict_raw_type
     final void Function(PropertyModel property) onSubmit) {
   switch (model.type) {
     case PropertyType.alignment:
@@ -42,8 +46,15 @@ Widget getPropertyInput<T>(final PropertyModel<T> model,
         },
       );
     case PropertyType.bool:
-      // TODO: Handle this case.
-      break;
+      final _model = model as BoolProperty;
+      return Checkbox(
+          value: _model.isNullable
+              ? _model.value
+              : _model.value ?? _model.defaultValue,
+          tristate: _model.isNullable,
+          onChanged: (final value) {
+            onSubmit(_model.copyWith(value: value));
+          });
     case PropertyType.boxConstraints:
       // TODO: Handle this case.
       break;
@@ -90,17 +101,19 @@ Widget getPropertyInput<T>(final PropertyModel<T> model,
       );
 
     case PropertyType.double:
-      return TextField(
-        inputFormatters: [],
-        keyboardType: TextInputType.number,
-        decoration: const InputDecoration(
-          isDense: true,
-          contentPadding: EdgeInsets.only(bottom: 10),
+      return Expanded(
+        child: TextField(
+          inputFormatters: [],
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(
+            isDense: true,
+            contentPadding: EdgeInsets.only(bottom: 10),
+          ),
+          onSubmitted: (final value) {
+            onSubmit((model as DoubleProperty)
+                .copyWith(value: double.tryParse(value)));
+          },
         ),
-        onSubmitted: (final value) {
-          onSubmit((model as DoubleProperty)
-              .copyWith(value: double.tryParse(value)));
-        },
       );
     case PropertyType.edgeInsets:
       final _model = model as EdgeInsetsProperty;

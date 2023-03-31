@@ -9,6 +9,7 @@ enum SignalId {
   currentFold,
   currentRoot,
   currentModel,
+  showOnlySetProperty,
 }
 
 FoldFile getCurrentFold(final BuildContext context) {

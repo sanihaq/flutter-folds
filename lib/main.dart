@@ -45,6 +45,7 @@ class App extends StatelessWidget {
                   createSignal<ThemeMode>(ThemeMode.system),
               SignalId.currentViewTab: () => createSignal<int>(0),
               SignalId.currentFold: () => createSignal<FoldFile>(fold),
+              SignalId.showOnlySetProperty: () => showOnlySetProperty,
               SignalId.currentRoot: () => currentRootSignal,
               SignalId.currentModel: () => createSignal<WidgetModel?>(null)
                 ..addListener(() {

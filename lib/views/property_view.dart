@@ -11,9 +11,10 @@ class PropertyView extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    return SignalBuilder(
-      signal: context.get<Signal<WidgetModel?>>(SignalId.currentModel),
-      builder: (final context, final model, final _) {
+    return DualSignalBuilder(
+      firstSignal: context.get<Signal<WidgetModel?>>(SignalId.currentModel),
+      secondSignal: context.get<Signal<bool>>(SignalId.showOnlySetProperty),
+      builder: (final context, final model, final showOnlySet, final _) {
         return Stack(
           children: [
             if (model != null)
@@ -22,7 +23,13 @@ class PropertyView extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: model.properties.keys.map((final propertyName) {
+                    children: (model.properties.keys.toList()..sort())
+                        .map((final propertyName) {
+                      final property = model.properties[propertyName]!;
+                      if (showOnlySet &&
+                          property.value == property.defaultValue) {
+                        return const SizedBox();
+                      }
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
@@ -35,18 +42,16 @@ class PropertyView extends StatelessWidget {
                                 child: Text(propertyName),
                               ),
                             ),
-                            Expanded(
-                              child: getPropertyInput<dynamic>(
-                                model.properties[propertyName]!,
-                                (final property) {
-                                  model.properties[propertyName] = property;
-                                  context
-                                      .get<Signal<WidgetModel?>>(
-                                          SignalId.currentModel)
-                                      // ignore: invalid_use_of_protected_member
-                                      .notifyListeners();
-                                },
-                              ),
+                            getPropertyInput<dynamic>(
+                              property,
+                              (final property) {
+                                model.properties[propertyName] = property;
+                                context
+                                    .get<Signal<WidgetModel?>>(
+                                        SignalId.currentModel)
+                                    // ignore: invalid_use_of_protected_member
+                                    .notifyListeners();
+                              },
                             ),
                           ],
                         ),

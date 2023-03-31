@@ -1,6 +1,7 @@
 import '../enums/property_enums.dart';
 import '../models/property_model.dart';
 import '../property_models/alignment_model.dart';
+import '../property_models/bool_model.dart';
 import '../property_models/box_constraints_model.dart';
 import '../property_models/clip_model.dart';
 import '../property_models/color_model.dart';
@@ -20,8 +21,7 @@ extension ModelExtension on PropertyType {
   PropertyModel fromJson(final Map<String, dynamic> json) {
     switch (this) {
       case PropertyType.bool:
-        // TODO: Handle this case.
-        break;
+        return BoolProperty.fromJson(json);
       case PropertyType.color:
         return ColorProperty.fromJson(json);
       case PropertyType.crossAxisAlignment:

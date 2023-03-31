@@ -6,6 +6,8 @@ import '../extensions/property_extension.dart';
 abstract class PropertyModel<T> {
   late final T? value;
 
+  final T? defaultValue = null;
+
   late final PropertyType type;
 
   late final bool isNullable;

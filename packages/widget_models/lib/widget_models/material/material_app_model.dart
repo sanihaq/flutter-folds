@@ -4,6 +4,7 @@ import '../../enums/model_enums.dart';
 import '../../models/child_model.dart';
 import '../../models/property_model.dart';
 import '../../models/widget_model.dart';
+import '../../property_models/bool_model.dart';
 import '../../property_models/key_model.dart';
 import '../../utils/utils.dart';
 
@@ -16,7 +17,11 @@ class MaterialAppModel extends WidgetModel {
   }) {
     super.id = id ?? generateUniqueId();
     super.type = ModelType.materialApp;
-    super.properties = joinMaps(properties ?? {}, {"key": KeyProperty()});
+    super.properties = joinMaps(properties ?? {}, {
+      "key": KeyProperty(),
+      "debugShowCheckedModeBanner":
+          BoolProperty(defaultValue: true, isNullable: false)
+    });
     super.children = joinMaps<ChildModel>(
         children ?? {}, {"home": const ChildModel(children: [])});
   }
@@ -25,6 +30,10 @@ class MaterialAppModel extends WidgetModel {
   MaterialApp toWidget() {
     return MaterialApp(
       key: (super.properties["key"] as KeyProperty?)?.resolveValue(),
+      debugShowCheckedModeBanner:
+          (super.properties["debugShowCheckedModeBanner"] as BoolProperty?)
+                  ?.resolveValue() ??
+              true,
       home: super.children["home"]?.firstOrNull?.toWidget(),
     );
   }
@@ -32,10 +41,12 @@ class MaterialAppModel extends WidgetModel {
   @override
   String toCode() {
     final key = properties["key"];
+    final debugShowCheckedModeBanner = properties["debugShowCheckedModeBanner"];
     final home = children["home"]?.firstOrNull;
     return """
   MaterialApp(
     ${key?.resolveValue() == null ? "" : "key: ${key?.toCode()},"}
+    ${debugShowCheckedModeBanner?.resolveValue() == null ? "" : "debugShowCheckedModeBanner: ${debugShowCheckedModeBanner?.toCode()},"}
     ${home == null ? "" : "child: ${home.toCode()},"}
   )
 """

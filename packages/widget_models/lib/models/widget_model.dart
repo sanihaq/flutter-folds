@@ -39,9 +39,9 @@ abstract class WidgetModel {
         "id": id,
         'type': EnumToString.convertToString(type),
         "properties": properties.map(
-          (final key, final value) => value.value == null
+          (final key, final property) => property.value == property.defaultValue
               ? const MapEntry(null, null)
-              : MapEntry(key, value.toJson()),
+              : MapEntry(key, property.toJson()),
         )..remove(null),
         "children": children.map(
           (final key, final value) => value.children.isEmpty
