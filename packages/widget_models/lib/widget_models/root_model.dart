@@ -6,6 +6,7 @@ import '../models/property_model.dart';
 import '../models/widget_model.dart';
 import '../property_models/double_model.dart';
 import '../property_models/key_model.dart';
+import '../utils/extensions.dart';
 import '../utils/utils.dart';
 
 @immutable
@@ -35,17 +36,20 @@ class RootModel extends WidgetModel {
 
   @override
   String toCode() {
-    final key = properties["key"];
+    final className =
+        name.split(" ").map((final e) => e.capitalize()).join().trim();
     final child = children["child"]?.firstOrNull;
     return """
-  Center(
-    ${key?.resolveValue() == null ? "" : "key: ${key?.toCode()},"}
-    ${child == null ? "" : "child: ${child.toCode()},"}
-  )
-"""
-        .replaceAll("\n", "")
-        .replaceAll(" ", "")
-        .trim();
+class ${className}View extends StatelessWidget {
+  const ${className}View({super.key});
+
+  @override
+  Widget build(final BuildContext context) {
+    return ${child == null ? "const Placeholder()" : "${child.toCode()}"};
+    
+  }
+}
+""";
   }
 
   @override

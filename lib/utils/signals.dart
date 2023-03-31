@@ -7,6 +7,8 @@ enum SignalId {
   themeMode,
   currentViewTab,
   currentFold,
+  currentRoot,
+  currentModel,
 }
 
 FoldFile getCurrentFold(final BuildContext context) {

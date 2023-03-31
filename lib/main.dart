@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_folds/states/signals.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:widget_models/models/widget_model.dart';
 
@@ -42,8 +43,14 @@ class App extends StatelessWidget {
             signals: {
               SignalId.themeMode: () =>
                   createSignal<ThemeMode>(ThemeMode.system),
-              SignalId.currentFold: () => createSignal<FoldFile>(fold),
               SignalId.currentViewTab: () => createSignal<int>(0),
+              SignalId.currentFold: () => createSignal<FoldFile>(fold),
+              SignalId.currentRoot: () => currentRootSignal,
+              SignalId.currentModel: () => createSignal<WidgetModel?>(null)
+                ..addListener(() {
+                  // ignore: invalid_use_of_protected_member
+                  currentRootSignal.notifyListeners();
+                }),
             },
             child: Builder(
               builder: (final context) {

@@ -6,6 +6,8 @@ environment:
 publish_to: none
 
 dependencies:
+  any_syntax_highlighter: ^0.0.13
+  dart_style: ^2.3.0
   flutter:
     sdk: flutter
   flutter_fancy_tree_view: ^1.1.0

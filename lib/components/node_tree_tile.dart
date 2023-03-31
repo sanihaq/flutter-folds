@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
+import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:modals/modals.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 import 'package:widget_models/enums/model_enums.dart';
@@ -8,6 +9,8 @@ import 'package:widget_models/models/widget_model.dart';
 import 'package:widget_models/widget_models/root_model.dart';
 
 import '../global/variables.dart';
+import '../states/signals.dart';
+import '../utils/signals.dart';
 import '../utils/utils.dart';
 
 class NodeTreeTile extends StatefulWidget {
@@ -38,7 +41,7 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
     if (widget.entry.node is RootModel) {
       title = (widget.entry.node as RootModel).name;
     } else {
-      title = getTitleFromEnum(widget.entry.node.type);
+      title = getTitleFromEnum(widget.entry.node.type.toString());
     }
     super.initState();
   }
@@ -47,12 +50,13 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
     final index = models.indexOf(widget.entry.node);
     if (index >= 0) {
       final newNode = (widget.entry.node as RootModel)
-          .copyWith(name: editingController.text);
+          .copyWith(name: editingController.text) as RootModel;
       models[index] = newNode;
       treeController.rebuild();
       if (widget.entry.isExpanded) {
         treeController.expand(newNode);
       }
+      currentRootSignal.value = newNode;
     }
   }
 
@@ -246,8 +250,8 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
-                                              child:
-                                                  Text(getTitleFromEnum(type)),
+                                              child: Text(getTitleFromEnum(
+                                                  type.toString())),
                                             ),
                                           );
                                         },
@@ -291,6 +295,17 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                               }
                             } else {
                               models.remove(widget.entry.node);
+                            }
+                            if (widget.entry.node.id ==
+                                context
+                                    .get<Signal<WidgetModel?>>(
+                                        SignalId.currentModel)
+                                    .value
+                                    ?.id) {
+                              context
+                                  .get<Signal<WidgetModel?>>(
+                                      SignalId.currentModel)
+                                  .value = null;
                             }
                             treeController.rebuild();
                           },
