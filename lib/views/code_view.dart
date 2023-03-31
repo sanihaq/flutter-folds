@@ -64,16 +64,22 @@ class CodeView extends StatelessWidget {
                 overrideDecoration:
                     const BoxDecoration(), // default is white colored icon
               )
-            : Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      model != null ? model.name : "select a root to see code",
+            : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          model != null
+                              ? model.name
+                              : "select a root to see code",
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               );
       },
     );

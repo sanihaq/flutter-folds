@@ -9,6 +9,7 @@ import '../components/fold_file.dart';
 import '../global/variables.dart';
 import '../models/fold_file.dart';
 import '../utils/signals.dart';
+import 'canvas_view.dart';
 import 'code_view.dart';
 import 'property_view.dart';
 import 'tree_view.dart';
@@ -149,7 +150,7 @@ class _TreeViewState extends State<MobileView> with TickerProviderStateMixin {
             children: [
               const ModelTreeView(),
               const PropertyView(),
-              const Icon(Icons.slideshow_outlined, size: 100),
+              const CanvasView(),
               const CodeView(),
             ],
           ),

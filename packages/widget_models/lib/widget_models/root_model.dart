@@ -27,11 +27,9 @@ class RootModel extends WidgetModel {
   final String name;
 
   @override
-  Center toWidget() {
-    return Center(
-      key: (super.properties["key"] as KeyProperty?)?.resolveValue(),
-      child: super.children["child"]?.firstOrNull?.toWidget(),
-    );
+  Widget toWidget() {
+    return super.children["child"]?.firstOrNull?.toWidget() ??
+        const Placeholder();
   }
 
   @override
