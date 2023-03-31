@@ -51,52 +51,29 @@ class _TreeViewState extends State<MobileView> with TickerProviderStateMixin {
   Widget build(final BuildContext context) {
     return Stack(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        TabBarView(
+          controller: _tabController,
           children: [
-            SignalBuilder(
-              signal: context.get<Signal<int>>(SignalId.currentViewTab),
-              builder: (final context, final value, final _) {
-                if (value == 0) {
-                  return IconButton(
-                    onPressed: () {
-                      models.add(RootModel(name: "Root ${models.length + 1}"));
-                      treeController.rebuild();
-                    },
-                    icon: const Icon(Icons.add),
-                  );
-                } else if (value == 1) {
-                  return SignalBuilder(
-                    signal: showOnlySetProperty,
-                    builder: (final context, final value, final child) {
-                      return IconButton(
-                        onPressed: () {
-                          showOnlySetProperty.value = !value;
-                        },
-                        icon: Icon(
-                          showOnlySetProperty.value
-                              ? Icons.toggle_on_outlined
-                              : Icons.toggle_off_outlined,
-                        ),
-                      );
-                    },
-                  );
-                } else if (value == 2) {
-                  return IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.ads_click, size: 20),
-                  );
-                } else {
-                  return IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.content_copy_outlined, size: 18),
-                  );
-                }
-              },
+            const ModelTreeView(),
+            const Padding(
+              padding: EdgeInsets.only(top: 40.0),
+              child: PropertyView(),
             ),
-            SizedBox(
+            const Padding(
+              padding: EdgeInsets.only(top: 40.0),
+              child: CanvasView(),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 40.0),
+              child: CodeView(),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 40,
+          child: Center(
+            child: SizedBox(
               width: 220,
-              height: 40,
               child: TabBar(
                 indicatorColor: Colors.transparent,
                 automaticIndicatorColorAdjustment: false,
@@ -114,53 +91,6 @@ class _TreeViewState extends State<MobileView> with TickerProviderStateMixin {
                 ],
               ),
             ),
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    final fold = getCurrentFold(context);
-                    final data = treeController.roots
-                        .map((final e) => e.toJson())
-                        .toList();
-                    fold.saveData(data);
-                  },
-                  icon: const Icon(Icons.save_outlined),
-                ),
-                ModalAnchor(
-                  tag: "folds-btn",
-                  child: IconButton(
-                    onPressed: () {
-                      showModal(ModalEntry.anchored(
-                        context,
-                        tag: 'showFoldsListModal',
-                        anchorTag: "folds-btn",
-                        modalAlignment: Alignment.topRight,
-                        anchorAlignment: Alignment.center,
-                        barrierDismissible: true,
-                        child: const SizedBox(
-                          width: 280,
-                          height: 400,
-                          child: FoldList(),
-                        ),
-                      ));
-                    },
-                    icon: const Icon(Icons.topic_outlined),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 40.0),
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              const ModelTreeView(),
-              const PropertyView(),
-              const CanvasView(),
-              const CodeView(),
-            ],
           ),
         ),
       ],

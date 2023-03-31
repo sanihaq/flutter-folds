@@ -3,6 +3,7 @@ import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:widget_models/models/widget_model.dart';
 
 import '../components/property_input.dart';
+import '../states/signals.dart';
 import '../utils/signals.dart';
 import '../utils/utils.dart';
 
@@ -63,13 +64,31 @@ class PropertyView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: model != null
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.center,
                 children: [
                   Text(
                     model != null
                         ? getTitleFromEnum(model.type.toString())
-                        : "Select a node to edit it's properties.",
+                        : "select a node to edit it's properties.",
                   ),
+                  if (model != null)
+                    SignalBuilder(
+                      signal: showOnlySetProperty,
+                      builder: (final context, final value, final child) {
+                        return IconButton(
+                          onPressed: () {
+                            showOnlySetProperty.value = !value;
+                          },
+                          icon: Icon(
+                            showOnlySetProperty.value
+                                ? Icons.toggle_on_outlined
+                                : Icons.toggle_off_outlined,
+                          ),
+                        );
+                      },
+                    ),
                 ],
               ),
             ),

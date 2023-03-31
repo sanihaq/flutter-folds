@@ -94,18 +94,18 @@ class ContainerModel extends WidgetModel {
     return """
   Container(
     ${key?.resolveValue() == null ? "" : "key: ${key?.toCode()},"}
-    ${alignment?.resolveValue() == null ? "" : "widthFactor: ${alignment?.toCode()},"}
-    ${padding?.resolveValue() == null ? "" : "heightFactor: ${padding?.toCode()},"}
-    ${color?.resolveValue() == null ? "" : "heightFactor: ${color?.toCode()},"}
-    ${decoration?.resolveValue() == null ? "" : "heightFactor: ${decoration?.toCode()},"}
-    ${foregroundDecoration?.resolveValue() == null ? "" : "heightFactor: ${foregroundDecoration?.toCode()},"}
-    ${width?.resolveValue() == null ? "" : "heightFactor: ${width?.toCode()},"}
-    ${height?.resolveValue() == null ? "" : "heightFactor: ${height?.toCode()},"}
-    ${constraints?.resolveValue() == null ? "" : "heightFactor: ${constraints?.toCode()},"}
-    ${margin?.resolveValue() == null ? "" : "heightFactor: ${margin?.toCode()},"}
-    ${transform?.resolveValue() == null ? "" : "heightFactor: ${transform?.toCode()},"}
-    ${transformAlignment?.resolveValue() == null ? "" : "heightFactor: ${transformAlignment?.toCode()},"}
-    ${clipBehavior?.resolveValue() == null ? "" : "heightFactor: ${clipBehavior?.toCode()},"}
+    ${alignment?.resolveValue() == null ? "" : "alignment: ${alignment?.toCode()},"}
+    ${padding?.resolveValue() == null ? "" : "padding: ${padding?.toCode()},"}
+    ${color?.resolveValue() == null ? "" : "color: ${color?.toCode()},"}
+    ${decoration?.resolveValue() == null ? "" : "decoration: ${decoration?.toCode()},"}
+    ${foregroundDecoration?.resolveValue() == null ? "" : "foregroundDecoration: ${foregroundDecoration?.toCode()},"}
+    ${width?.resolveValue() == null ? "" : "width: ${width?.toCode()},"}
+    ${height?.resolveValue() == null ? "" : "height: ${height?.toCode()},"}
+    ${constraints?.resolveValue() == null ? "" : "constraints: ${constraints?.toCode()},"}
+    ${margin?.resolveValue() == null ? "" : "margin: ${margin?.toCode()},"}
+    ${transform?.resolveValue() == null ? "" : "transform: ${transform?.toCode()},"}
+    ${transformAlignment?.resolveValue() == null ? "" : "transformAlignment: ${transformAlignment?.toCode()},"}
+    ${clipBehavior?.resolveValue() == null ? "" : "clipBehavior: ${clipBehavior?.toCode()},"}
     ${child == null ? "" : "child: ${child.toCode()},"}
   )
 """
