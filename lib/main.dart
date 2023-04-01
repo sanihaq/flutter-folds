@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_folds/states/signals.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:widget_models/models/widget_model.dart';
 
+import '/states/signals.dart';
 import '/utils/db.dart';
 import '/utils/signals.dart';
 import 'global/variables.dart';
 import 'models/fold_file.dart';
-import 'views/mobile_view.dart';
+import 'views/app_layout.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,32 +63,11 @@ class App extends StatelessWidget {
                   themeMode: themeMode,
                   theme: ThemeData.light(useMaterial3: true),
                   darkTheme: ThemeData.dark(useMaterial3: true),
-                  home: const MyHomePage(),
+                  home: const AppLayout(),
                 );
               },
             ),
           );
         });
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(final BuildContext context) {
-    return const Scaffold(
-      body: MobileView(),
-    );
   }
 }

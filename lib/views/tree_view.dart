@@ -13,7 +13,11 @@ import '../states/signals.dart';
 import '../utils/signals.dart';
 
 class ModelTreeView extends StatelessWidget {
-  const ModelTreeView({super.key});
+  const ModelTreeView({
+    required this.tagId,
+    super.key,
+  });
+  final String tagId;
   @override
   Widget build(final BuildContext context) {
     return Stack(
@@ -41,13 +45,13 @@ class ModelTreeView extends StatelessWidget {
                   icon: const Icon(Icons.save_outlined),
                 ),
                 ModalAnchor(
-                  tag: "folds-btn",
+                  tag: "folds-btn-$tagId",
                   child: IconButton(
                     onPressed: () {
                       showModal(ModalEntry.anchored(
                         context,
                         tag: 'showFoldsListModal',
-                        anchorTag: "folds-btn",
+                        anchorTag: "folds-btn-$tagId",
                         modalAlignment: Alignment.topRight,
                         anchorAlignment: Alignment.center,
                         barrierDismissible: true,

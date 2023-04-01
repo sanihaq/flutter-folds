@@ -150,11 +150,6 @@ class _NodeTreeTileState extends State<NodeTreeTile> {
                 children: [
                   if (widget.entry.parent == null)
                     IconButton(
-                      onPressed: _isModalShowing ? null : () {},
-                      icon: const Icon(Icons.remove_red_eye, size: 16),
-                    ),
-                  if (widget.entry.parent == null)
-                    IconButton(
                       onPressed: _isModalShowing
                           ? null
                           : () {

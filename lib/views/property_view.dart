@@ -23,6 +23,7 @@ class PropertyView extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 32.0),
                 child: SingleChildScrollView(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: (model.properties.keys.toList()..sort())
                         .map((final propertyName) {
