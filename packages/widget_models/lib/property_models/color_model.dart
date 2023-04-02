@@ -64,8 +64,9 @@ class ColorProperty extends PropertyModel<ColorValueType?> {
           isReplaceable: super.isReplaceable,
         )
       });
+    } else {
+      return copyWith(resolverProperty: {});
     }
-    return this;
   }
 
   @override

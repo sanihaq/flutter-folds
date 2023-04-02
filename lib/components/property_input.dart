@@ -103,6 +103,7 @@ Widget getPropertyInput<T>(
     case PropertyType.double:
       return Expanded(
         child: TextField(
+          controller: TextEditingController(text: model.value.toString()),
           inputFormatters: [],
           keyboardType: TextInputType.number,
           decoration: const InputDecoration(
