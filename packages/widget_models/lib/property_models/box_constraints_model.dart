@@ -14,6 +14,7 @@ class BoxConstraintsProperty extends PropertyModel<BoxConstraints?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -35,6 +36,11 @@ class BoxConstraintsProperty extends PropertyModel<BoxConstraints?> {
     return BoxConstraintsProperty(
       value: value ?? super.value,
     );
+  }
+
+  @override
+  PropertyModel<BoxConstraints?> setResolverProperty() {
+    return this;
   }
 
   @override

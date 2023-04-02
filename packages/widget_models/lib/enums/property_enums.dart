@@ -17,6 +17,8 @@ enum PropertyType {
   matrix4,
   mainAxisAlignment,
   mainAxisSize,
+  materialColor,
+  materialAccentColor,
   string,
   textBaseline,
   textDirection,

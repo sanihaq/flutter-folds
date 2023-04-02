@@ -15,6 +15,7 @@ class MainAxisSizeProperty extends PropertyModel<MainAxisSize?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -28,6 +29,11 @@ class MainAxisSizeProperty extends PropertyModel<MainAxisSize?> {
   @override
   String toCode() {
     return value.toString();
+  }
+
+  @override
+  PropertyModel<MainAxisSize?> setResolverProperty() {
+    return this;
   }
 
   @override

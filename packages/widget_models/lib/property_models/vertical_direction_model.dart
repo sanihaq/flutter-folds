@@ -15,6 +15,7 @@ class VerticalDirectionProperty extends PropertyModel<VerticalDirection?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -28,6 +29,11 @@ class VerticalDirectionProperty extends PropertyModel<VerticalDirection?> {
   @override
   String toCode() {
     return value.toString();
+  }
+
+  @override
+  PropertyModel<VerticalDirection?> setResolverProperty() {
+    return this;
   }
 
   @override

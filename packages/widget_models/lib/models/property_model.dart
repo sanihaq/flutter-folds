@@ -8,6 +8,8 @@ abstract class PropertyModel<T> {
 
   final T? defaultValue = null;
 
+  late final Map<String, PropertyModel> resolverProperties;
+
   late final PropertyType type;
 
   late final bool isNullable;
@@ -16,7 +18,13 @@ abstract class PropertyModel<T> {
 
   final List<T> availableValues = const [];
 
+  PropertyModel<T> setValue(final T? value) {
+    return copyWith(value: value).setResolverProperty();
+  }
+
   Object? resolveValue();
+
+  PropertyModel<T> setResolverProperty();
 
   String toCode();
 
@@ -32,6 +40,9 @@ abstract class PropertyModel<T> {
       'type': EnumToString.convertToString(type),
       if (!isNullable) 'is-nullable': isNullable,
       if (isReplaceable) 'is-replaceable': isReplaceable,
+      if (resolverProperties.isNotEmpty)
+        "resolver-property": resolverProperties
+            .map((final key, final value) => MapEntry(key, value.toJson()))
     };
   }
 

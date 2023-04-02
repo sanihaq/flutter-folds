@@ -24,6 +24,7 @@ class EdgeInsetsProperty extends PropertyModel<EdgeInsetsValueType?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -65,6 +66,11 @@ class EdgeInsetsProperty extends PropertyModel<EdgeInsetsValueType?> {
       case EdgeInsetsValueType.zero:
     }
     return "";
+  }
+
+  @override
+  PropertyModel<EdgeInsetsValueType?> setResolverProperty() {
+    return this;
   }
 
   @override

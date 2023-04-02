@@ -15,6 +15,7 @@ class TextDirectionProperty extends PropertyModel<TextDirection?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -37,6 +38,11 @@ class TextDirectionProperty extends PropertyModel<TextDirection?> {
     final bool? isReplaceable,
   }) {
     return TextDirectionProperty(value: value ?? super.value);
+  }
+
+  @override
+  PropertyModel<TextDirection?> setResolverProperty() {
+    return this;
   }
 
   @override

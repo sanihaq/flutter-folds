@@ -42,7 +42,7 @@ Widget getPropertyInput<T>(
         _model.value,
         _model.isNullable,
         (final value) {
-          onSubmit(_model.copyWith(value: value));
+          onSubmit(_model.setValue(value));
         },
       );
     case PropertyType.bool:
@@ -53,7 +53,7 @@ Widget getPropertyInput<T>(
               : _model.value ?? _model.defaultValue,
           tristate: _model.isNullable,
           onChanged: (final value) {
-            onSubmit(_model.copyWith(value: value));
+            onSubmit(_model.setValue(value));
           });
     case PropertyType.boxConstraints:
       // TODO: Handle this case.
@@ -65,7 +65,7 @@ Widget getPropertyInput<T>(
         _model.value,
         _model.isNullable,
         (final value) {
-          onSubmit(_model.copyWith(value: value));
+          onSubmit(_model.setValue(value));
         },
       );
     case PropertyType.clip:
@@ -75,7 +75,7 @@ Widget getPropertyInput<T>(
         _model.value,
         _model.isNullable,
         (final value) {
-          onSubmit(_model.copyWith(value: value));
+          onSubmit(_model.setValue(value));
         },
       );
     case PropertyType.crossAxisAlignment:
@@ -85,7 +85,7 @@ Widget getPropertyInput<T>(
         _model.value,
         _model.isNullable,
         (final value) {
-          onSubmit(_model.copyWith(value: value));
+          onSubmit(_model.setValue(value));
         },
       );
 
@@ -96,7 +96,7 @@ Widget getPropertyInput<T>(
         _model.value,
         _model.isNullable,
         (final value) {
-          onSubmit(_model.copyWith(value: value));
+          onSubmit(_model.setValue(value));
         },
       );
 
@@ -110,8 +110,8 @@ Widget getPropertyInput<T>(
             contentPadding: EdgeInsets.only(bottom: 10),
           ),
           onSubmitted: (final value) {
-            onSubmit((model as DoubleProperty)
-                .copyWith(value: double.tryParse(value)));
+            onSubmit(
+                (model as DoubleProperty).setValue(double.tryParse(value)));
           },
         ),
       );
@@ -122,7 +122,7 @@ Widget getPropertyInput<T>(
         _model.value,
         _model.isNullable,
         (final value) {
-          onSubmit(_model.copyWith(value: value));
+          onSubmit(_model.setValue(value));
         },
       );
 
@@ -148,10 +148,29 @@ Widget getPropertyInput<T>(
         _model.value,
         _model.isNullable,
         (final value) {
-          onSubmit(_model.copyWith(value: value));
+          onSubmit(_model.setValue(value));
         },
       );
-
+    case PropertyType.materialColor:
+      final _model = model as MateriaColorProperty;
+      return _dropDown<MaterialColorValueType>(
+        _model.availableValues,
+        _model.value,
+        _model.isNullable,
+        (final value) {
+          onSubmit(_model.setValue(value));
+        },
+      );
+    case PropertyType.materialAccentColor:
+      final _model = model as MaterialAccentColorProperty;
+      return _dropDown<MaterialAccentColorValueType>(
+        _model.availableValues,
+        _model.value,
+        _model.isNullable,
+        (final value) {
+          onSubmit(_model.setValue(value));
+        },
+      );
     case PropertyType.matrix4:
       final _model = model as Matrix4Property;
       return _dropDown<Matrix4ValueType>(
@@ -159,7 +178,7 @@ Widget getPropertyInput<T>(
         _model.value,
         _model.isNullable,
         (final value) {
-          onSubmit(_model.copyWith(value: value));
+          onSubmit(_model.setValue(value));
         },
       );
     case PropertyType.mainAxisAlignment:
@@ -169,7 +188,7 @@ Widget getPropertyInput<T>(
         _model.value,
         _model.isNullable,
         (final value) {
-          onSubmit(_model.copyWith(value: value));
+          onSubmit(_model.setValue(value));
         },
       );
     case PropertyType.mainAxisSize:
@@ -179,7 +198,7 @@ Widget getPropertyInput<T>(
         _model.value,
         _model.isNullable,
         (final value) {
-          onSubmit(_model.copyWith(value: value));
+          onSubmit(_model.setValue(value));
         },
       );
     case PropertyType.string:
@@ -192,7 +211,7 @@ Widget getPropertyInput<T>(
         _model.value,
         _model.isNullable,
         (final value) {
-          onSubmit(_model.copyWith(value: value));
+          onSubmit(_model.setValue(value));
         },
       );
     case PropertyType.textDirection:
@@ -202,7 +221,7 @@ Widget getPropertyInput<T>(
         _model.value,
         _model.isNullable,
         (final value) {
-          onSubmit(_model.copyWith(value: value));
+          onSubmit(_model.setValue(value));
         },
       );
     case PropertyType.textStyle:
@@ -215,7 +234,7 @@ Widget getPropertyInput<T>(
         _model.value,
         _model.isNullable,
         (final value) {
-          onSubmit(_model.copyWith(value: value));
+          onSubmit(_model.setValue(value));
         },
       );
   }

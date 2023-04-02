@@ -15,6 +15,7 @@ class MainAxisAlignmentProperty extends PropertyModel<MainAxisAlignment?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -28,6 +29,11 @@ class MainAxisAlignmentProperty extends PropertyModel<MainAxisAlignment?> {
   @override
   String toCode() {
     return value.toString();
+  }
+
+  @override
+  PropertyModel<MainAxisAlignment?> setResolverProperty() {
+    return this;
   }
 
   @override

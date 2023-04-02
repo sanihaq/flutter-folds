@@ -15,6 +15,7 @@ class CrossAxisAlignmentProperty extends PropertyModel<CrossAxisAlignment?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -28,6 +29,11 @@ class CrossAxisAlignmentProperty extends PropertyModel<CrossAxisAlignment?> {
   @override
   String toCode() {
     return value.toString();
+  }
+
+  @override
+  PropertyModel<CrossAxisAlignment?> setResolverProperty() {
+    return this;
   }
 
   @override

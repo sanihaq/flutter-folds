@@ -15,6 +15,7 @@ class ClipProperty extends PropertyModel<Clip?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -28,6 +29,11 @@ class ClipProperty extends PropertyModel<Clip?> {
   @override
   String toCode() {
     return value.toString();
+  }
+
+  @override
+  PropertyModel<Clip?> setResolverProperty() {
+    return this;
   }
 
   @override

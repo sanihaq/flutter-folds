@@ -19,6 +19,7 @@ class DecorationProperty extends PropertyModel<DecorationValueType?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -39,6 +40,11 @@ class DecorationProperty extends PropertyModel<DecorationValueType?> {
       
     }
     return "";
+  }
+
+  @override
+  PropertyModel<DecorationValueType?> setResolverProperty() {
+    return this;
   }
 
   @override

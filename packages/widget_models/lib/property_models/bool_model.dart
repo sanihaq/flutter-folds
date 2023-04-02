@@ -15,6 +15,7 @@ class BoolProperty extends PropertyModel<bool?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -41,6 +42,11 @@ class BoolProperty extends PropertyModel<bool?> {
       isNullable: isNullable ?? super.isNullable,
       isReplaceable: isReplaceable ?? super.isReplaceable,
     );
+  }
+
+  @override
+  PropertyModel<bool?> setResolverProperty() {
+    return this;
   }
 
   @override

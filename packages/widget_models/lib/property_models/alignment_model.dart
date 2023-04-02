@@ -27,6 +27,7 @@ class AlignmentProperty extends PropertyModel<AlignmentValueType?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -80,6 +81,11 @@ class AlignmentProperty extends PropertyModel<AlignmentValueType?> {
       case AlignmentValueType.topRight:
         return "Alignment.topRight";
     }
+  }
+
+  @override
+  PropertyModel<AlignmentValueType?> setResolverProperty() {
+    return this;
   }
 
   @override

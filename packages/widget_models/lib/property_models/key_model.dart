@@ -22,6 +22,7 @@ class KeyProperty extends PropertyModel<KeyValueType?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -55,6 +56,11 @@ class KeyProperty extends PropertyModel<KeyValueType?> {
       // case KeyValueType.value:
       //   return const ValueKey(null);
     }
+  }
+
+  @override
+  PropertyModel<KeyValueType?> setResolverProperty() {
+    return this;
   }
 
   @override

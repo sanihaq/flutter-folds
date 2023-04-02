@@ -15,6 +15,7 @@ class TextBaselineProperty extends PropertyModel<TextBaseline?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -37,6 +38,11 @@ class TextBaselineProperty extends PropertyModel<TextBaseline?> {
     final bool? isReplaceable,
   }) {
     return TextBaselineProperty(value: value ?? super.value);
+  }
+
+  @override
+  PropertyModel<TextBaseline?> setResolverProperty() {
+    return this;
   }
 
   @override

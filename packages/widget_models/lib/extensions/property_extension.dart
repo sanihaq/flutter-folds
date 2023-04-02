@@ -12,6 +12,8 @@ import '../property_models/edge_insets_model.dart';
 import '../property_models/key_model.dart';
 import '../property_models/main_axis_alignment_model.dart';
 import '../property_models/main_axis_size_model.dart';
+import '../property_models/material_accent_color_model.dart';
+import '../property_models/material_color_model.dart';
 import '../property_models/matrix4_model.dart';
 import '../property_models/text_baseline_model.dart';
 import '../property_models/text_direction_model.dart';
@@ -73,6 +75,10 @@ extension ModelExtension on PropertyType {
         return EdgeInsetsProperty.fromJson(json);
       case PropertyType.matrix4:
         return Matrix4Property.fromJson(json);
+      case PropertyType.materialColor:
+        return MateriaColorProperty.fromJson(json);
+      case PropertyType.materialAccentColor:
+        return MaterialAccentColorProperty.fromJson(json);
     }
 
     return KeyProperty();

@@ -14,6 +14,7 @@ class DoubleProperty extends PropertyModel<double?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -24,6 +25,11 @@ class DoubleProperty extends PropertyModel<double?> {
   @override
   String toCode() {
     return "$value";
+  }
+
+  @override
+  PropertyModel<double?> setResolverProperty() {
+    return this;
   }
 
   @override

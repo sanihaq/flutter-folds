@@ -37,6 +37,7 @@ class Matrix4Property extends PropertyModel<Matrix4ValueType?> {
     super.value = value;
     super.isNullable = isNullable ?? true;
     super.isReplaceable = isReplaceable ?? false;
+    super.resolverProperties = const {};
   }
 
   @override
@@ -66,6 +67,11 @@ class Matrix4Property extends PropertyModel<Matrix4ValueType?> {
     final bool? isReplaceable,
   }) {
     return Matrix4Property(value: value ?? super.value);
+  }
+
+  @override
+  PropertyModel<Matrix4ValueType?> setResolverProperty() {
+    return this;
   }
 
   @override

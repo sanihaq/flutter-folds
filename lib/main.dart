@@ -33,41 +33,40 @@ class App extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     return FutureBuilder(
-        future: _load(),
-        builder: (final context, final snapshot) {
-          if (snapshot.data == null) {
-            return const Center(child: CircularProgressIndicator.adaptive());
-          }
-          final fold = snapshot.data!;
-          return Solid(
-            signals: {
-              SignalId.themeMode: () =>
-                  createSignal<ThemeMode>(ThemeMode.system),
-              SignalId.currentViewTab: () => createSignal<int>(0),
-              SignalId.currentFold: () => createSignal<FoldFile>(fold),
-              SignalId.showOnlySetProperty: () => showOnlySetProperty,
-              SignalId.currentRoot: () => currentRootSignal,
-              SignalId.currentModel: () => createSignal<WidgetModel?>(null)
-                ..addListener(() {
-                  // ignore: invalid_use_of_protected_member
-                  currentRootSignal.notifyListeners();
-                }),
+      future: _load(),
+      builder: (final context, final snapshot) {
+        if (snapshot.data == null) {
+          return const Center(child: CircularProgressIndicator.adaptive());
+        }
+        final fold = snapshot.data!;
+        return Solid(
+          signals: {
+            SignalId.themeMode: () => createSignal<ThemeMode>(ThemeMode.system),
+            SignalId.currentViewTab: () => createSignal<int>(0),
+            SignalId.currentFold: () => createSignal<FoldFile>(fold),
+            SignalId.showOnlySetProperty: () => showOnlySetProperty,
+            SignalId.currentRoot: () => currentRootSignal,
+            SignalId.currentModel: () => createSignal<WidgetModel?>(null)
+              ..addListener(() {
+                // ignore: invalid_use_of_protected_member
+                currentRootSignal.notifyListeners();
+              }),
+          },
+          child: Builder(
+            builder: (final context) {
+              final themeMode = context.observe<ThemeMode>(SignalId.themeMode);
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Flutter Folds',
+                themeMode: themeMode,
+                theme: ThemeData.light(useMaterial3: true),
+                darkTheme: ThemeData.dark(useMaterial3: true),
+                home: const AppLayout(),
+              );
             },
-            child: Builder(
-              builder: (final context) {
-                final themeMode =
-                    context.observe<ThemeMode>(SignalId.themeMode);
-                return MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  title: 'Flutter Folds',
-                  themeMode: themeMode,
-                  theme: ThemeData.light(useMaterial3: true),
-                  darkTheme: ThemeData.dark(useMaterial3: true),
-                  home: const AppLayout(),
-                );
-              },
-            ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
