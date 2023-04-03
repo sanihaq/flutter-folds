@@ -17,6 +17,8 @@ class FoldFile with _$FoldFile {
     required String dataId,
     required DateTime createdAt,
     required DateTime modifiedAt,
+    required String? lastRoot,
+    required String? lastNode,
   }) = _FoldFile;
 
   factory FoldFile.fromJson(Map<String, dynamic> json) =>

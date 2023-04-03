@@ -3,7 +3,9 @@ import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:modals/modals.dart';
 import 'package:widget_models/models/widget_model.dart';
+import 'package:widget_models/widget_models.dart';
 
+import '../states/signals.dart';
 import '/utils/signals.dart';
 import '../global/variables.dart';
 import 'canvas_view.dart';
@@ -42,6 +44,9 @@ class _AppLayoutState extends State<AppLayout> with TickerProviderStateMixin {
       childrenProvider: (final WidgetModel model) => model.getAllChildren(),
     );
     treeController.expandAll();
+    if (models.isNotEmpty) {
+      currentRootSignal.value = models.first as RootModel;
+    }
   }
 
   @override

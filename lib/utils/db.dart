@@ -32,20 +32,72 @@ class Db {
   }
 
   Future<FoldFile> createExampleFold() async {
-    final fold = await createNewFold("Default Fold", false);
-    await fold.saveData([]);
+    final fold =
+        await createNewFold("Default Fold", false, "3807U9B!", "7892F&14");
+    await fold.saveData([
+      <String, dynamic>{
+        "name": "Default Root",
+        "id": "7892F&14",
+        "type": "root",
+        "properties": <String, dynamic>{},
+        "children": {
+          "child": {
+            "type": "child",
+            "children": [
+              {
+                "id": "3836NXPA",
+                "type": "center",
+                "properties": <String, dynamic>{},
+                "children": {
+                  "child": {
+                    "type": "child",
+                    "children": [
+                      {
+                        "id": "3807U9B!",
+                        "type": "container",
+                        "properties": {
+                          "color": {
+                            "value": "materialColor",
+                            "type": "color",
+                            "resolver-property": {
+                              "materialColor": {
+                                "value": "blue",
+                                "type": "materialColor"
+                              }
+                            }
+                          },
+                          "width": {"value": 100.0, "type": "double"},
+                          "height": {"value": 100.0, "type": "double"}
+                        },
+                        "children": <String, dynamic>{}
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]);
     // folds.insert(0, fold);
     return fold;
   }
 
-  Future<FoldFile> createNewFold(final String name,
-      [final bool isSaveData = true]) async {
+  Future<FoldFile> createNewFold(
+    final String name, [
+    final bool isSaveData = true,
+    final String? lastNode,
+    final String? lastRoot,
+  ]) async {
     final fold = FoldFile(
       name: name,
       id: db.collection(foldsCollectionName).doc().id,
       dataId: db.collection(foldsDataCollectionName).doc().id,
       createdAt: DateTime.now(),
       modifiedAt: DateTime.now(),
+      lastNode: lastNode,
+      lastRoot: lastRoot,
     );
     await saveFold(fold);
     if (isSaveData) {
