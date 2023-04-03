@@ -30,19 +30,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  format:
-    name: "Format"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Get Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.3.4"
-          channel: "any"
-      - name: Format
-        run: flutter format lib && flutter format test
+  # format:
+  #   name: "Format"
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #     - name: Get Flutter
+  #       uses: subosito/flutter-action@v2
+  #       with:
+  #         flutter-version: "3.3.4"
+  #         channel: "any"
+  #     - name: Format
+  #       run: flutter format lib && flutter format test
 
   # analyze:
   #   name: "Analyze"

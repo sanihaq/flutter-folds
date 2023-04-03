@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: widget_models
+dependency_overrides:
+  widget_models:
+    path: packages/widget_models
