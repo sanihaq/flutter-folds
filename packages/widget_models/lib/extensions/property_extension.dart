@@ -15,6 +15,7 @@ import '../property_models/main_axis_size_model.dart';
 import '../property_models/material_accent_color_model.dart';
 import '../property_models/material_color_model.dart';
 import '../property_models/matrix4_model.dart';
+import '../property_models/raw_color_model.dart';
 import '../property_models/text_baseline_model.dart';
 import '../property_models/text_direction_model.dart';
 import '../property_models/vertical_direction_model.dart';
@@ -79,6 +80,8 @@ extension ModelExtension on PropertyType {
         return MateriaColorProperty.fromJson(json);
       case PropertyType.materialAccentColor:
         return MaterialAccentColorProperty.fromJson(json);
+      case PropertyType.rawColor:
+        return RawColorProperty.fromJson(json);
     }
 
     return KeyProperty();

@@ -1,8 +1,11 @@
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart' hide ColorProperty;
+import 'package:flutter_solidart/flutter_solidart.dart';
 import 'package:widget_models/enums/property_enums.dart';
 import 'package:widget_models/models/property_model.dart';
 import 'package:widget_models/property_models.dart';
 
+import '../states/signals.dart';
 import '../utils/utils.dart';
 
 Widget _dropDown<T>(final List<T> values, final T? value, final bool isNullable,
@@ -202,6 +205,56 @@ Widget getPropertyInput<T>(
           onSubmit(_model.setValue(value));
         },
       );
+    case PropertyType.rawColor:
+      final _model = model as RawColorProperty;
+      return SizedBox(
+        width: 220,
+        height: 376,
+        child: SignalBuilder(
+          signal: recentColors,
+          builder: (final context, final value, final child) {
+            return ColorPicker(
+              color: _model.value ?? Colors.blue,
+              width: 18,
+              height: 18,
+              spacing: 0.5,
+              borderRadius: 9,
+              onColorChanged: (final Color value) {},
+              onColorChangeEnd: (final Color value) {
+                onSubmit(_model.setValue(value));
+              },
+              enableOpacity: true,
+              opacityTrackHeight: 24,
+              opacityThumbRadius: 12,
+              opacityTrackWidth: double.infinity,
+              padding: EdgeInsets.zero,
+              showColorCode: true,
+              showRecentColors: true,
+              recentColors: value,
+              maxRecentColors: 10,
+              recentColorsSubheading:
+                  Text("${value.isEmpty ? "No " : ""}recent colors"),
+              onRecentColorsChanged: (final recents) {
+                recentColors.value = recents;
+              },
+              copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+                editFieldCopyButton: true,
+                editUsesParsedPaste: true,
+                parseShortHexCode: true,
+              ),
+              pickersEnabled: const <ColorPickerType, bool>{
+                ColorPickerType.both: false,
+                ColorPickerType.primary: false,
+                ColorPickerType.accent: false,
+                ColorPickerType.bw: false,
+                ColorPickerType.custom: false,
+                ColorPickerType.wheel: true,
+              },
+            );
+          },
+        ),
+      );
+
     case PropertyType.string:
       // TODO: Handle this case.
       break;

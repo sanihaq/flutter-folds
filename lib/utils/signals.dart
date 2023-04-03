@@ -10,6 +10,7 @@ enum SignalId {
   currentRoot,
   currentModel,
   showOnlySetProperty,
+  recentColors,
 }
 
 FoldFile getCurrentFold(final BuildContext context) {

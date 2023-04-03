@@ -13,6 +13,7 @@ export 'property_models/main_axis_size_model.dart';
 export 'property_models/material_accent_color_model.dart';
 export 'property_models/material_color_model.dart';
 export 'property_models/matrix4_model.dart';
+export 'property_models/raw_color_model.dart';
 export 'property_models/text_baseline_model.dart';
 export 'property_models/text_direction_model.dart';
 export 'property_models/vertical_direction_model.dart';

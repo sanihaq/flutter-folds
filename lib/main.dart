@@ -51,6 +51,7 @@ class App extends StatelessWidget {
                 // ignore: invalid_use_of_protected_member
                 currentRootSignal.notifyListeners();
               }),
+            SignalId.recentColors: () => recentColors,
           },
           child: Builder(
             builder: (final context) {

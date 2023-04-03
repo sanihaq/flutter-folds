@@ -19,6 +19,7 @@ enum PropertyType {
   mainAxisSize,
   materialColor,
   materialAccentColor,
+  rawColor,
   string,
   textBaseline,
   textDirection,

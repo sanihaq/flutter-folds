@@ -68,12 +68,14 @@ class PropertyEditingWidget extends StatelessWidget {
     required this.properties,
     this.isTopMost = true,
     this.leftPadding = 4,
+    this.isParentHasValue = false,
     super.key,
   });
 
   // ignore: strict_raw_type
   final Map<String, PropertyModel> properties;
   final bool isTopMost;
+  final bool isParentHasValue;
   final double leftPadding;
 
   @override
@@ -87,7 +89,9 @@ class PropertyEditingWidget extends StatelessWidget {
           children:
               (properties.keys.toList()..sort()).map((final propertyName) {
             final property = properties[propertyName]!;
-            if (showOnlySet && property.value == property.defaultValue) {
+            if (showOnlySet &&
+                !isParentHasValue &&
+                property.value == property.defaultValue) {
               return const SizedBox();
             }
             return Column(
@@ -105,7 +109,7 @@ class PropertyEditingWidget extends StatelessWidget {
                           right: 4.0,
                         ),
                         child: SizedBox(
-                          width: 180,
+                          width: 160,
                           child: Text(propertyName),
                         ),
                       ),
@@ -125,6 +129,8 @@ class PropertyEditingWidget extends StatelessWidget {
                 PropertyEditingWidget(
                   properties: property.resolverProperties,
                   isTopMost: false,
+                  isParentHasValue: property.value != null &&
+                      property.value != property.defaultValue,
                   leftPadding: leftPadding + leftPadding,
                 ),
                 if (isTopMost) const Divider(),

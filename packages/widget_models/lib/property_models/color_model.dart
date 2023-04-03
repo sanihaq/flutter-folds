@@ -6,6 +6,7 @@ import '../models/property_model.dart';
 import '../extensions/property_extension.dart';
 import 'material_accent_color_model.dart';
 import 'material_color_model.dart';
+import 'raw_color_model.dart';
 
 enum ColorValueType {
   color,
@@ -50,7 +51,14 @@ class ColorProperty extends PropertyModel<ColorValueType?> {
 
   @override
   PropertyModel<ColorValueType?> setResolverProperty() {
-    if (value == ColorValueType.materialColor) {
+    if (value == ColorValueType.color) {
+      return copyWith(resolverProperty: {
+        "color": RawColorProperty(
+          isNullable: super.isNullable,
+          isReplaceable: super.isReplaceable,
+        )
+      });
+    } else if (value == ColorValueType.materialColor) {
       return copyWith(resolverProperty: {
         "materialColor": MateriaColorProperty(
           isNullable: super.isNullable,
@@ -74,7 +82,8 @@ class ColorProperty extends PropertyModel<ColorValueType?> {
     if (value == null) return null;
     switch (value!) {
       case ColorValueType.color:
-        return null;
+        return (resolverProperties["color"] as RawColorProperty?)
+            ?.resolveValue();
       case ColorValueType.materialColor:
         return (resolverProperties["materialColor"] as MateriaColorProperty?)
             ?.resolveValue();
@@ -124,7 +133,8 @@ class ColorProperty extends PropertyModel<ColorValueType?> {
     if (value == null) return "null";
     switch (value!) {
       case ColorValueType.color:
-        return "null";
+        return (resolverProperties["color"] as RawColorProperty?)?.toCode() ??
+            "null";
       case ColorValueType.materialColor:
         return (resolverProperties["materialColor"] as MateriaColorProperty?)
                 ?.toCode() ??
